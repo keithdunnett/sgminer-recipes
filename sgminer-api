@@ -1,0 +1,132 @@
+#!/bin/bash
+
+# Simple sgminer API client script for the Linux command line
+# Uses netcat for networking and jq for JSON parsing (install via e.g. 'apt install netcat jq')
+
+# Adds a recursive loop to enablepools, disablepools (plural) such that if you have a config with e.g.
+# pools 0-4 for Ethereum and pools 5-8 for Ethereum Classic, you can issue
+#
+# sgminer-api <rig> <port> disablepools 0-4
+# sgminer-api <rig> <port> enablepools 5-9
+# sgminer-api <rig> <port> changestrategy 3
+#
+# to switch between one and the other. It seems that sgminer will not reliably switch to using the new
+# pool configuration without issuing a further "changestrategy" command even where load balancing was
+# set, so the last command (shouldn't be needed, but is) gets sgminer to use the new pool config in
+# load balancing mode.
+#
+# NB. While not the preserve of this script, users may want to note that sgminer's configuration file
+# writer mechanism doesn't save "experimental" parameters such as quotas. Either use a static config
+# file and do not allow sgminer to write to it, or override any config file by setting the default
+# config to "/dev/null" and setting sensible default parameters in your startup script (which you can
+# then modify via the API).
+
+# Make sure we have what we need
+
+nc=`which nc` || echo "nc: not found. Please install 'netcat' from your distribution's package manager."
+jq=`which jq` || echo "jq: not found. Please install 'jq' from your distribution's package manager."
+
+
+# Try to make sense of what we got at the commandline. Anything transmissible to the sgminer API will
+# have (at least) a host, a port and a command as parameters.
+
+h="$1"
+p="$2"
+c="$3"
+x="$4"
+
+actthistime=1;
+
+function strstr ( )
+{
+  echo "$1" | grep --quiet "$2"
+}
+
+function forxincsvlist ( )
+{
+	list=`echo "$1" | sed -e "s|,| |g"`;
+	cmd=`echo "$2" | sed -e "s|s$||"`;
+	finallist=""
+
+	for n in $list; do
+  		if $(echo $n | grep --quiet -); then finallist="$finallist `seq -s " " $(echo $n | sed -e "s/-/\ /")`"; else finallist="$finallist $n"; fi;
+	done;
+
+	for d in $finallist; do
+		mycmd="{\"command\": \"$cmd\", \"parameter\": \"$d\"}" 
+#  		echo "$0 $h $p $mycmd";
+  		$0 "$h" "$p" "$mycmd";
+	done
+}
+
+if [[ -z "$c" ]]; 
+then 
+	echo "Usage: sgminer-api [host] [port] [\"API command\"]";
+	exit 1;
+else 
+	# We have (at least) three arguments. Does the third conform to a known API format?
+	if $( strstr "$c" '{.*command.*parameter.*}' )
+	then
+		#command is JSON format, send it as it is. User best have escaped it right.
+		mycmd="$c";
+	else
+		#it's not JSON. Do we have a fourth argument?
+		if [[ ! -z "$x" ]]; 
+		then
+			# Yes. Treat it as an argument to a command we'll have asked for, likely in the plural, in arg #3.
+			# If the command requires a single integer, e.g. pool number, we can recurse over a comma-separated list.
+			# If the command requires two comma-separated parameters already, e.g. pool quota, we might have trouble pluralising it.
+
+			# Work around that by detecting an optional colon delimiter after a comma-separated list; if we get exactly two comma
+			# separated values, follow standard API syntax. If we find a colon in it, then the first part will be what to operate
+			# on and the second part the value(s) that we wish to apply to it, for instance poolquotas 0,2,3-6:0 to set quota on
+			# those pools to zero. We could also support pairs of values, e.g. poolquotas 0,1,2,3:40,40,30,30 provided that we can
+			# correctly marry up the arguments. We would need to expand constructions like 0-4,5-9,10-14:0,10,0... oh, another day.
+
+			case "$c" in
+				enablepool*)
+				forxincsvlist $x "$c";
+				actthistime=0;
+				;;
+				disablepool*)
+				forxincsvlist $x "$c";
+				actthistime=0;
+				;;
+				removepool*)
+				forxincsvlist $x "$c";
+				actthistime=0;
+				;;
+				gpu?)
+				forxincsvlist $x "$c";
+				actthistime=0;
+				;;
+				"check")
+				mycmd="{\"command\": \"$c\", \"parameter\": \"$x\"}"
+				actthistime=1;
+				;;
+				*)
+				echo "Error: unexpected fourth argument. Possible shell quoting error?";
+				echo "Usage: sgminer-api [host] [port] [\"API command\"]";
+				exit 1;
+				;;
+			esac
+
+		else
+			# No. Treat arg #3 as the sgminer API command we're trying to send.
+			if [[ $( echo "$c" | grep '|' ) ]]; then 
+				z=`echo "$c" | cut -d '|' -f 1`;
+				y=`echo "$c" | cut -d '|' -f 2`;
+				mycmd="{\"command\": \"$z\", \"parameter\": \"$y\"}" 
+			else
+				mycmd="{\"command\": \"$c\", \"parameter\": \"\"}" 
+			fi
+		fi
+
+	fi
+
+fi
+
+if test $actthistime -eq 1; then  
+#	echo "cmd: $mycmd to host: $h on port $p"
+	echo "$mycmd" | nc "$h" "$p" | jq .
+fi

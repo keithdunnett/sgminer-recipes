@@ -1,0 +1,118 @@
+#!/bin/bash
+
+set -e
+
+WALLET="0xc91B3f6a889a9963c7eaE2d5BD5Ca88a6Ae2d2EA";
+WORKER="`hostname`";
+POOL="stratum+tcp://eu1.ethermine.org:4444";
+POOL2="stratum+tcp://pool.alpereum.ch:4001";
+POOL3="stratum+tcp://eth-eu2.nanopool.org:9999";
+POOL4="stratum+tcp://eth-eu1.nanopool.org:9999";
+POOL5="stratum+tcp://us1.ethermine.org:4444";
+
+ETCWALLET="0x2699d8531BDE9606F257387fdf0EC7d498F6197c";
+ETCWORKER="`hostname`";
+ETCPOOL="stratum+tcp://etc-eu1.nanopool.org:19999";
+ETCPOOL2="stratum+tcp://etc-eu2.nanopool.org:19999";
+ETCPOOL3="stratum+tcp://eu1-etc.ethermine.org:4444";
+ETCPOOL4="stratum+tcp://eu1-etc.ethermine.org:4444";
+
+
+date "+%s" > /dev/shm/miner.start
+
+
+#Write out a startup script to /dev/shm/sgminer.tmp
+#Reinitialise temp and startup batch files with the shebang
+
+echo "#!/bin/bash" > /dev/shm/sgminer.tmp
+
+#Write the desired arguments out into a temp file
+
+cat << EOF | while read line; do echo "$line " >> /dev/shm/sgminer.tmp ; done; echo "" >> /dev/shm/sgminer.tmp
+/usr/bin/nice -n -10 /usr/local/bin/sgminer 
+# sgminer seems determined to write config files and reuse them, this should tell it otherwise
+--default-config=/dev/null
+--event-on gpu_sick
+--event-reboot-delay 30
+#--verbose 
+#--debug 
+#--protocol-dump 
+#--text-only 
+#--per-device-stats
+--log 5
+--tcp-keepalive 30 
+--queue 0
+--gpu-threads 1 
+--intensity 20 
+--worksize 256 
+--scan-time 7 
+--expiry 28 
+--api-listen
+--api-allow W:192.168.1.0/24,W:192.168.1.0/24
+--api-description phoenix
+--api-network
+--api-port 4028
+--api-mcast
+--api-mcast-addr 224.0.0.116
+--api-mcast-code sgminer
+--api-mcast-des "phoenix - 6 x RX470 GPUs"
+--api-mcast-port 4028
+# quotas are arbitary and are used in proportion to the sum of all active quotas
+# thus you can make quotas add up to 100 if you want them to be a percentage of your rig total
+# or start them all at 100 if you want quotas as percentage of fair share
+# the approach used by the author below is based on total quota of 100 per currency 
+--load-balance 
+--disable-rejecting
+-U "30;$POOL3" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "10;$POOL4" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "30;$POOL" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "10;$POOL5" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "20;$POOL2" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "35;$ETCPOOL3" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
+-U "35;$ETCPOOL2" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
+-U "15;$ETCPOOL" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce  --state disabled
+-U "15;$ETCPOOL4" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
+2>/dev/shm/sgminer.log
+EOF
+
+# Now build our actual startup script
+echo "#!/bin/bash" > /dev/shm/sgminer
+
+
+# Insert the desired startup incantations to make settings to your GPUs
+
+cat << 'EOF' | while read line; do echo "$line" >> /dev/shm/sgminer ; done;
+export GPU_FORCE_64BIT_PTR=1
+export GPU_USE_SYNC_OBJECTS=1
+export GPU_MAX_ALLOC_PERCENT=100
+export GPU_SINGLE_ALLOC_PERCENT=100
+export GPU_MAX_HEAP_SIZE=100
+# My cards have the default sclk speed at 1100MHz and I want a 15% overclock. Commented for safe default.
+#ls -1 /sys/class/drm/card?/device/pp_sclk_od | while read gpu; do echo 15 > $gpu; done
+ls -1 /sys/class/drm/card?/device/hwmon/hwmon?/pwm1 | while read gpu; do echo 100 > $gpu; done
+echo 60 > /tmp/gputemp.target
+EOF
+
+# Now cat that batch file to another removing lines commented out which would break sgminer startup.
+# This allows us to use a line-by-line approach above yet feed the parameters listed above and
+# minus comments into our single-line invocation of sgminer.
+
+cat /dev/shm/sgminer.tmp | grep -v "^#" | grep -v "^$" | while read line; do echo -n "$line " >> /dev/shm/sgminer ; done
+
+# Make it executable and run it
+
+chmod 700 /dev/shm/sgminer
+
+echo "Attempting to start sgminer with the following startup script: "
+echo ""
+cat /dev/shm/sgminer
+echo ""
+echo ""
+echo "Be patient. This will take a few seconds."
+
+# Little hack to avoid hangups when DNS resolution isn't working at startup
+
+sleep 1; test=`ping -c1 www.google.com || /bin/true`;
+
+`which screen` -AdmS sgminer -t gputemp `which watch` /usr/local/bin/gputemp
+`which screen` -AS sgminer -X screen -t sgminer /bin/bash /dev/shm/sgminer 
