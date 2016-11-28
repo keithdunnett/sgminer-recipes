@@ -1,8 +1,6 @@
 # sgminer-recipes
 
-=======================================================================================================
-Documents, configuration and helper scripts for sgminer v5.4.0 (and newer) under Linux
-=======================================================================================================
+##Documents, configuration and helper scripts for sgminer v5.4.0 (and newer) under Linux
 
 Maintainer:	Keith Dunnett <'keith' at 'dunnett' dot 'name'>
 
@@ -13,7 +11,7 @@ at small and medium scale home miners who don't want substantial infrastructure 
 rigs, as well as those still debating whether to run mining operations under Linux.
 
 It's not a polished repository of code, rather some scripts, notes, tips, tricks and quasi-tutorials 
-that seek to work with what we've got. There is no Makefile and no install script; to install a script 
+that seek to work with what we've got. There is no Makefile and no install script; to install a 
 scripts into /usr/local/bin so you can run it like any other program, just copy it there (assuming you
 checked the files out from git, which preserves permissions). If you downloaded a script with curl or
 wget, you can make it executable with 'chmod 755 /path/to/file'.
@@ -31,9 +29,7 @@ reboot automatically if a GPU becomes unresponsive and open up an API to the loc
 may not be what you want in all cases. These are recipes, not prescriptions.  
 
 
-=======================================================================================================
-gputemp	- monitor temperatures and control fans via the amdgpu sysfs interface 
-=======================================================================================================
+##gputemp	- monitor temperatures and control fans via the amdgpu sysfs interface 
 
 A helper script to be run alongside sgminer, monitors reported GPU temperatures and modulates the fan
 speeds to try and maintain a target temperature, which can be configured on the fly by setting the
@@ -70,9 +66,7 @@ by software more than hardware. Fans are relatively cheap and disposable; if you
 hardware by 10% then don't be scared to overdrive a fan motor by more than that. 
 
 
-=======================================================================================================
-sgminer-start-screen-example - batch file to start sgminer in a screen session
-=======================================================================================================
+##sgminer-start-screen-example - batch file to start sgminer in a screen session
 
 This is more or less what I use to start my rigs, it contains a lot of my default settings and you will 
 need to edit it to your own requirements. This script writes out a startup script for sgminer and then
@@ -104,9 +98,7 @@ with Ctrl-A, then d (for detach). For more than that, 'man screen'. You can add 
 might care to monitor into additional screen tabs as you please.
 
 
-=======================================================================================================
-sgminer-api-client - simple bash command line client to use the sgminer API via netcat and jq
-=======================================================================================================
+## sgminer-api-client - simple bash command line client to use the sgminer API via netcat and jq
 
 Linux has everything you need to access the sgminer API at command line, but the examples provided with
 sgminer are in PHP, Ruby and C, whilst most third-party implementations involve Javascript and Node.js.
@@ -115,9 +107,7 @@ through the package management of most Linux distributions. As of the initial ve
 sending API commands in JSON format and does no processing of the raw response other than to pipe it
 through 'jq .' which formats the output and adds colour.
 
-==================================================
-Recursive API commands to enable and disable pools
-==================================================
+###Recursive API commands to enable and disable pools
 
 The bash client adds recursion to one or two commands, such that if you have pools 0-4 configured for
 one thing and pools 5-8 configured for another but disabled, as in the above startup script, you can
@@ -137,16 +127,14 @@ sgminer from mining Ethereum on five stratum servers at three pools to mining Et
 four servers at two pools. Or anything else you care to configure, but that's the first thing I 
 had in mind for it. 
 
-=======================================
-Scripted processing of sgminer API data
-=======================================
+###Scripted processing of sgminer API data
 
 To extract specific data from the API output requires further JSON and/or text processing; this will 
 not be written into this API client (well, mostly not) as it can be done using existing Linux tools. 
 
 A few quick examples:
 
-# Use jq to filter an individual datum "MHS av" from a JSON array[] called SUMMARY 
+#### Use jq to filter an individual datum "MHS av" from a JSON array[] called SUMMARY 
 
 sgminer-api phoenix 4028 summary | jq .SUMMARY[].\""MHS av\""
 164.929
@@ -161,56 +149,52 @@ apt install npm, npm install json2csv, ln -sf /usr/bin/nodejs /usr/bin/node
 
 Some examples of what one might do with it:
 
-# Use jq to select the body of the response, and json2csv to present the data (-n is no header row)
+##### Use jq to extract response and json2csv to present the data (-n is no header row)
 
 root@precision:~/mining-dev/sgminer-recipes# sgminer-api precision 4028 devs | jq .DEVS | json2csv -n
 0,"Y","Alive",0,0,0,0,0,0,0,0,27.5409,27.5417,27541,27542,3759,0,395,2.3049,"20",0,0,4,1480352802,2694996.5578,44318,2754986903327,0,154214451,1480352842,0.8834,0,97854
 1,"Y","Alive",0,0,0,0,0,0,0,0,27.5484,27.5551,27548,27555,3826,0,386,2.3459,"20",0,0,2,1480352844,2695730.561,44344,2737107031393,0,5000000000,1480352845,0.863,0,97854
 2,"Y","Alive",0,0,0,0,0,0,0,0,27.4653,27.5348,27465,27535,3666,0,452,2.2478,"20",0,0,4,1480352798,2687598.8541,44598,2660688552019,0,154214451,1480352841,1.0033,0,97854
 
-# As above but use sed to preface the csv output with the rig name and port that we queried. Good for interrogating a larger farm.
+##### As above but use sed to preface the csv output with the rig name and port that we queried. Good for interrogating a larger farm.
 
 root@precision:~/mining-dev/sgminer-recipes# h="precision"; p="4028"; sgminer-api $h $p devs | jq .DEVS | json2csv -n | sed -e "s/^/${h},${p},/g"
 precision,4028,0,"Y","Alive",0,0,0,0,0,0,0,0,27.5412,27.5982,27541,27598,3791,0,398,2.3125,"20",0,0,4,1480353332,2708995.0474,44568,2771459122406,0,154214451,1480353350,0.8851,0,98362
 precision,4028,1,"Y","Alive",0,0,0,0,0,0,0,0,27.547,27.4982,27547,27498,3850,0,386,2.3485,"20",0,0,4,1480353278,2709565.4728,44590,2749499749315,0,154214451,1480353349,0.8582,0,98362
 precision,4028,2,"Y","Alive",0,0,0,0,0,0,0,0,27.4655,27.4764,27466,27476,3683,0,452,2.2466,"20",0,0,4,1480353331,2701550.1578,44860,2671001768784,0,154214451,1480353349,0.9975,0,98362
 
-# Some fun with awk, just because this wouldn't be complete without.
+##### Some fun with awk, just because this wouldn't be complete without.
  
-# From 'stats' output (which convert to CSV), grep only those lines containing the string "POOL".
-# Then feed those lines into awk, using a comma as our field separator, and for each record processed. divide 
-# the content of fields 27 and 28 (send and receive bytes per pool) by field 3 (uptime in seconds) to arrive
-# at bytes/sec figures for send and receive, adding these to the values of sum and sum2 respectively for the
-# cumulative bandwidth in each direction. When we reach the end of the stream, if we had 1 or more records 
-# then print the values of sum and sum2, with labels before, units afterwards and a newline in between
-# One of these days I must actually *learn* awk and sed...
+From 'stats' output (which convert to CSV), grep only those lines containing the string "POOL".
+Then feed those lines into awk, using a comma as our field separator, and for each record processed. divide 
+the content of fields 27 and 28 (send and receive bytes per pool) by field 3 (uptime in seconds) to arrive
+at bytes/sec figures for send and receive, adding these to the values of sum and sum2 respectively for the
+cumulative bandwidth in each direction. When we reach the end of the stream, if we had 1 or more records 
+then print the values of sum and sum2, with labels before, units afterwards and a newline in between
+One of these days I must actually *learn* awk and sed...
 
 sgminer-api phoenix 4028 stats | jq .STATS | json2csv | grep "POOL" | awk -F , '{ sum += $27 / $3 } { sum2 += $28 / $3 } END { if (NR > 0) print "send: "sum" bytes/sec\nrecv: " sum2 " bytes/sec"}'
 send: 38.3627 bytes/sec
 recv: 138.281 bytes/sec
 
-=======================================================================================================
-Ideas, todos, exercises maybe left for the reader and other brain farts
-=======================================================================================================
+##Ideas, todos, exercises maybe left for the reader and other brain farts
 
-* Various build, debug and deployment scripts might yet be cleaned up and shared
-* Logging, log analysis and management?
-* Maybe some config (or API command) generators/helpers for pools who publish info to make that easy 
-* Possibly an improved sgminer code base if or when my C is fit for purpose
-* Possibly some more enhancements to the bash API client script
-* Better info on preventing and responding to a wider range of typical failure cases for mining rigs, 
+Various build, debug and deployment scripts might yet be cleaned up and shared
+Logging, log analysis and management?
+Maybe some config (or API command) generators/helpers for pools who publish info to make that easy 
+Possibly an improved sgminer code base if or when my C is fit for purpose
+Possibly some more enhancements to the bash API client script
+Better info on preventing and responding to a wider range of typical failure cases for mining rigs, 
 to include crashed and hung processes as well as things that sgminer can handle on its own. Also some
 approach to a heartbeat mechanism, i.e. validate that we are working properly and respond to unknown
 failures as well as known ones.
-* Some notes and docs on GPU mining rig setup, possibly.
-* Similar JSON parsing techniques could usefully be applied to pool APIs, exchange APIs, and data APIs
+Some notes and docs on GPU mining rig setup, possibly.
+Similar JSON parsing techniques could usefully be applied to pool APIs, exchange APIs, and data APIs
 from sites like whattomine.com. Whether and how far to rely on this for controlling miners is open to
 debate and to individual responsibility, of course.
-* Expand on Linux command line text and JSON processing as needed
+Expand on Linux command line text and JSON processing as needed
 
-======================
-Comments? Suggestions?
-======================
+##Comments? Suggestions?
 
 Very much welcomed, though my time and attention to computing is variable and my Inbox is in enough of
 a mess that I don't want contributions lost in e-mail. Please add any bugs, todos or whatever to the 
@@ -218,9 +202,7 @@ issue tracker on GitHub: https://github.com/magick777/sgminer-recipes/issues. If
 believe I should have written, please have a go at implementing it and submit a pull request if you
 succeed, or describe the issue and how you're looking to tackle it if not.
 
-=====================================
-Goodwill, appreciation, beer money...
-=====================================
+##Goodwill, appreciation, beer money...
 
 Users of these scripts should not feel in any way obliged to tip; they are just examples of how one
 might configure and use free, open-source software and they are shared without obligation. Equally 
