@@ -1,6 +1,6 @@
 # sgminer-recipes
 
-##Configuration and helper scripts for sgminer v5.4.0 (and newer) under Linux
+##Configuration and helper scripts for sgminer under Linux
 
 Maintainer:	Keith Dunnett
 
@@ -8,13 +8,12 @@ Maintainer:	Keith Dunnett
 
 This is a collection of scripts and utilities intended to ease the use of sgminer under Linux, pitched
 at small and medium scale home miners who don't want substantial infrastructure to manage a few mining
-rigs, as well as those still debating whether to run mining operations under Linux.
-
-It's not a polished repository of code, rather some scripts, notes, tips, tricks and quasi-tutorials 
-that seek to work with what we've got. There's no Makefile and no install script; to install a 
-scripts into /usr/local/bin so you can run it like any other program, just copy it there with cp (assuming you
-checked the files out from git, which preserves the permissions). If you downloaded a script with curl or
-wget, you can make it executable with `chmod 700 /path/to/file`. 
+rigs, as well as those still debating whether to run mining operations under Linux. Probably nothing new
+here for seasoned Linux users. It's not a polished repository of code, rather some scripts, notes, tips, 
+tricks and quasi-tutorials that seek to work with what we've got. There's no Makefile and no install script; 
+to install a scripts into /usr/local/bin so you can run it like any other program, just copy it there with cp 
+(assuming you checked the files out from git, which preserves the permissions). If you downloaded a script 
+with curl or wget, you can make it executable with `chmod 700 /path/to/file`. 
 
 You are advised to READ the scripts and MODIFY them to your purposes; the GPU temperature management
 uses what I consider sane settings for my Sapphire Nitro RX480 cards but that doesn't mean they'll be
@@ -219,4 +218,4 @@ then please feel free to buy me a beer. Encouragement is always welcome. Tip jar
 - ETH:	0x750743a731e4148aA9070FC2e0D5F422aA44B9C1
 - ETC:	0x958970b854F35cD2990c3Ca2E213C24d0c3A0ae9
 
-Last revision: 29 Nov 2016
+Last revision: 30 Dec 2016
