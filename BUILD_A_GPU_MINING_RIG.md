@@ -52,3 +52,25 @@ what I'll be using initially.
 Any old keyboard and mouse should do. I'm using a USB mouse and a PS/2 keyboard, as that's what I had. Wired Ethernet is by far the easiest when installing operating systems, so a cable is plugged in from the router.
 
 AC power is supplied to the PSU through a power-monitoring wall plug; an Android tablet is set up to display the power usage. The PSU's Corsair Link connector is connected from a USB header on the motherboard to the PSU, for power monitoring and statistics when in Windows. This done, time to flick the switch and see what goes bang.
+
+### Initial power on
+
+This will usually involve a certain amount of messing around, checking connections, pulling and replugging until you stir the system into life; when you do you'll be greeted with the UEFI interface. Have a look around, make sure that all is as expected. Optionally, but recommended:
+
+- update the UEFI firmware
+- set onboard adapter as the primary GPU regardless of the PCIe slots
+- set the state after a power outage to ON; you want it to come back to life.
+
+### Install SSD
+
+Or whatever other storage, but cheap SATA SSDs are plentiful. I'm using a 120GB ADATA SP550, more than adequate.
+
+### Insert UEFI OS install medium
+
+Which normally means plug in a UEFI-capable USB stick containing the installer files for your operating system, though you could use a DVD-ROM or any other means. The point is: get it connected so we can set UEFI up accordingly. Information on how to make, or where to buy, a USB install key for a given operating system are available from the publishers.
+
+### Configure UEFI boot devices
+
+You'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
+
+ 
