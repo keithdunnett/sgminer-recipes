@@ -75,4 +75,6 @@ Which normally means plug in a UEFI-capable USB stick containing the installer f
 
 You'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
 
-## Install your operating system(s) 
+## Install your operating system(s)
+
+We are essentially building a Linux rig. However, for the AMD RX470 and RX480, at least you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them.
