@@ -1,4 +1,4 @@
-# Building a GPU mining rig - HARDWARE
+# Building a GPU mining rig
 
 As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate, hardware is fairly typical of that used for Ethereum mining in early 2017.
 
@@ -44,18 +44,17 @@ Once we put it all into into a crate, it'll look a bit like this:
 
 Though the rig will eventually run headless, we'll need keyboard, video and mouse whilst configuring UEFI and installing an operating system, as well as network and power connections. At this stage, what we're looking to do is to test that what we've done works and that we can reach and configure the UEFI interface.
 
-7#### Display
+#### Display
 
-The motherboard has VGA and HDMI outputs; I'm already using the only HDMI-capable display I have, so a 17" 1024x768 screen is
-what I'll be using initially. You could use an existing monitor, or even an HTDV.
+The motherboard has VGA and HDMI outputs; I'm already using the only HDMI-capable display I have, so a 17" 1024x768 screen is what I'll be using initially. You could use an existing monitor, or even an HTDV depending on what your motherboard supports.
 
-#### HID, network and power connectiond
+#### HIDs, network and power
 
 Any old keyboard and mouse should do. I'm using a USB mouse and a PS/2 keyboard, as that's what I had. Wired Ethernet is by far the easiest when installing operating systems, so a cable is plugged in from the router.
 
 AC power is supplied to the PSU through a power-monitoring wall plug; an Android tablet is set up to display the power usage. The PSU's Corsair Link connector is connected from a USB header on the motherboard to the PSU, for power monitoring and statistics when in Windows. This done, time to flick the switch and see what goes bang.
 
-### Initial power on
+### First power on & UEFI configuration
 
 This will usually involve a certain amount of messing around, checking connections, pulling and replugging until you stir the system into life; when you do you'll be greeted with the UEFI interface. Have a look around, make sure that all is as expected. Optionally, but recommended:
 
@@ -63,21 +62,21 @@ This will usually involve a certain amount of messing around, checking connectio
 - set onboard adapter as the primary GPU regardless of the PCIe slots
 - set the state after a power outage to ON; you want it to come back to life.
 
-### Install SSD
+#### Install SSD
 
 Or whatever other storage, but cheap SATA SSDs are plentiful. I'm using a 120GB ADATA SP550, more than adequate.
 
-### Insert UEFI OS install medium
+#### Insert UEFI OS install medium
 
 Which normally means plug in a UEFI-capable USB stick containing the installer files for your operating system, though you could use a DVD-ROM or any other means. The point is: get it connected so we can set UEFI up accordingly. Information on how to make or where to buy a USB install key for a given operating system are available from the publishers.
 
-### Configure UEFI boot devices
+#### Configure UEFI boot devices
 
 Having installed the drives, you'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
 
 ## Install your operating system(s)
 
-We are essentially building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. Suggested way of achieving this 
+We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them.
 
 ### Dual boot: Windows 10 & Ubuntu 16.04.1
 
@@ -92,7 +91,10 @@ Microsoft still provides a free upgrade to Windows 10 for users of assistive tec
 - installing and activating Win 7 Pro
 - installing Internet Explorer 11
 - downloading and running the Windows 10 upgrade tool from Microsoft
+- allowing the Windows 10 Upgrade Assistant to download and prepare the upgrade
 
-#### Win 10 Pro
+
+
+#### Windows 10 Pro
 
 #### Ubuntu 16.04.1 LTS
