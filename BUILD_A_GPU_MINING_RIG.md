@@ -1,4 +1,4 @@
-# Building a GPU mining rig - WIP UNFINISHED
+# Building a GPU mining rig - HARDWARE
 
 As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate, hardware is fairly typical of that used for Ethereum mining in early 2017.
 
@@ -44,7 +44,7 @@ Once we put it all into into a crate, it'll look a bit like this:
 
 Though the rig will eventually run headless, we'll need keyboard, video and mouse whilst configuring UEFI and installing an operating system, as well as network and power connections. At this stage, what we're looking to do is to test that what we've done works and that we can reach and configure the UEFI interface.
 
-#### Display
+7#### Display
 
 The motherboard has VGA and HDMI outputs; I'm already using the only HDMI-capable display I have, so a 17" 1024x768 screen is
 what I'll be using initially. You could use an existing monitor, or even an HTDV.
@@ -69,27 +69,30 @@ Or whatever other storage, but cheap SATA SSDs are plentiful. I'm using a 120GB 
 
 ### Insert UEFI OS install medium
 
-Which normally means plug in a UEFI-capable USB stick containing the installer files for your operating system, though you could use a DVD-ROM or any other means. The point is: get it connected so we can set UEFI up accordingly. Information on how to make, or where to buy, a USB install key for a given operating system are available from the publishers.
+Which normally means plug in a UEFI-capable USB stick containing the installer files for your operating system, though you could use a DVD-ROM or any other means. The point is: get it connected so we can set UEFI up accordingly. Information on how to make or where to buy a USB install key for a given operating system are available from the publishers.
 
 ### Configure UEFI boot devices
 
-You'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
+Having installed the drives, you'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
 
 ## Install your operating system(s)
 
-We are essentially building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them.
+We are essentially building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. Suggested way of achieving this 
 
 ### Dual boot: Windows 10 & Ubuntu 16.04.1
 
-For my purposes I'm going to set the rig up to dual-boot between Windows 10 (which will mainly be used for flashing) and Ubuntu 16.04.1 for general use.
+For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this across the board, but a dual-boot rig could be quite useful.
 
+#### Upgrading to Windows 10 Pro from Windows 7 Pro
 
+Microsoft still provides a free upgrade to Windows 10 for users of assistive technology (I in fact am, although they don't check), so it is possible to equip a machine with Windows 10 Pro for the cost of a Windows 7 Pro licence and a bit of time and patience. To get this to work involved:
 
+- buying a Win 7 Pro licence key
+- finding an OEM install ISO and making a USB installer with Rufus
+- installing and activating Win 7 Pro
+- installing Internet Explorer 11
+- downloading and running the Windows 10 upgrade tool from Microsoft
 
-
-
-#### Windows 10 Pro
-
-#### Windows 7 Pro + upgrade to Win10
+#### Win 10 Pro
 
 #### Ubuntu 16.04.1 LTS
