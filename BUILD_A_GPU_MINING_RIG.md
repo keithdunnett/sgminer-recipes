@@ -77,10 +77,19 @@ You'll want to set the order of boot devices in UEFI, and potentially make any s
 
 ## Install your operating system(s)
 
-We are essentially building a Linux rig. However, for the AMD RX470 and RX480, at least you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them.
+We are essentially building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them.
 
 ### Dual boot: Windows 10 & Ubuntu 16.04.1
 
-#### Windows 10
+For my purposes I'm going to set the rig up to dual-boot between Windows 10 (which will mainly be used for flashing) and Ubuntu 16.04.1 for general use.
+
+
+
+
+
+
+#### Windows 10 Pro
+
+#### Windows 7 Pro + upgrade to Win10
 
 #### Ubuntu 16.04.1 LTS
