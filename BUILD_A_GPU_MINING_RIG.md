@@ -12,6 +12,8 @@ Here we have an ASRock H81 Pro BTC, to which I've fitted 2GB of RAM, an Intel Ce
 
 ![Motherboard](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_170838.JPG "AsRock H81 Pro BTC")
 
+### Set up the motherboard before use
+
 #### Replace CMOS battery and set 'Clear CMOS' jumper (optional)
 
 If you bought the board second-hand, as I did, it's no bad idea to set the "Clear CMOS" jumper before you ever power it up, or don't be surprised when you can't access UEFI thanks to Fast Boot mode. Usually you need to boot once with this set, then restore it to the default position so as to preserve the settings you make. I also took the opportunity to replace the CMOS backup battery as I had some on hand, although in practice they last for several years.
@@ -38,14 +40,14 @@ Once we put it all into into a crate, it'll look a bit like this:
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_183125.JPG "Crated up")
 
-### Prepare environment to set up a new machine 
+### Prepare your environment to set up a new machine 
 
 Though the rig will eventually run headless, we'll need keyboard, video and mouse whilst configuring UEFI and installing an operating system, as well as network and power connections. At this stage, what we're looking to do is to test that what we've done works and that we can reach and configure the UEFI interface.
 
 #### Display
 
 The motherboard has VGA and HDMI outputs; I'm already using the only HDMI-capable display I have, so a 17" 1024x768 screen is
-what I'll be using initially.
+what I'll be using initially. You could use an existing monitor, or even an HTDV.
 
 #### HID, network and power connectiond
 
@@ -73,4 +75,4 @@ Which normally means plug in a UEFI-capable USB stick containing the installer f
 
 You'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
 
- 
+## Install your operating system(s) 
