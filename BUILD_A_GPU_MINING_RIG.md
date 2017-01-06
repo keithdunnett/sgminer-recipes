@@ -6,7 +6,15 @@ This first page covers the building of the hardware up to the point of operating
 
 ## Assemble the base system hardware
 
-This is not a treatise on choosing the optimal hardware for mining; 
+This is not a treatise on the perfect hardware for mining, which varies with time and place, but the list of hardware I'm 
+using for this rig is as follows:
+
+- Corsair AX1200i power supply
+- ASRock H81 Pro BTC motherboard
+- Intel Celeron G1840 processor
+- 2GB PC-1333 memory
+- ADATA 120GB solid state drive
+- 6 x Sapphire RX470 Nitro+ graphics cards
 
 ### Assemble the CPU, motherboard and memory
 
