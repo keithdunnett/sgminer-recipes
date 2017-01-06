@@ -105,12 +105,48 @@ Drivers were installed from the ASRock website for Windows 10. The generic drive
 
 ## Windows 10 issues
 
-I had a couple of unexplained issues in the course of the upgrade to Windows 10. The machine froze a couple of times 
+I had a couple of unexplained issues in the course of the upgrade to Windows 10 and setting up afterwards. These were not sufficiently relialy 
+
+- The machine froze a couple of times, requiring a hard reset.
+- An Ubuntu 16.04.1 USB key suffered damage to its EFI partition and would not boot.
 
 
-# Section 3: Shrink disk in preparation for dual boot
 
-# Section 4: Install Ubuntu 16.04.1
+# Section 3: Shrink Windows 10 in preparation for dual boot
+
+We assume here that the intention is to fit the Windows 10 
+
+# Section 4: Install & configure Ubuntu 16.04.1 LTS
+
+## Install Ubuntu 16.04.1 LTS
+
+### Installation media
+
+To install in UEFI mode, you will need a UEFI-ready USB key with the Ubuntu installer on it. One of the easiest ways to produce this is to download the ISO under Windows and use Rufus as for Windows installs. Make sure when creating the USB key to select "GPT partitioning schema for UEFI" to have it install in UEFI mode
+
+### Running the Ubuntu installer
+
+Installing and configuring Ubuntu should be more or less the same whether you're running it as dual-boot or on its own; boot into the installer and follow the prompts. The default options are largely safe; make sure you **don't** tell it to erase the disk if you are sharing a single disk between Windows and Ubuntu; the default will make use of the free space. When it asks about bootloader configuration, install alongside Windows Boot Manager if you're going for a dual-boot setup. Fairly soon you should be booted into your new Ubuntu install.
+
+### Updating Ubuntu software packages
+
+There are graphical front-ends to Ubuntu package management, but few of them are an improvement on the speed and flexibility of the command line interface. From the dash (button top left, with Ubuntu logo) search for Terminal, and run that when you find it. Then, in terminal, something like this should be sufficient to update most Ubuntu packages.
+
+```
+sudo su -
+apt update
+apt --list-upgradable
+apt upgrade
+```
+### Enable SSH access
+
+
+
+### Install AMDAPPSDK3.0 & amdgpu-pro 16.50 (or newer)
+
+
+
+
 
 # Section 5: 
 
