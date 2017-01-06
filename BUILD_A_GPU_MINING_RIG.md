@@ -15,6 +15,7 @@ using for this rig is as follows:
 - 2GB PC-1333 memory
 - ADATA 120GB solid state drive
 - 6 x Sapphire RX470 Nitro+ graphics cards
+- 6 x PCIe 1x-16x powered risers
 
 ### Assemble the CPU, motherboard and memory
 
@@ -86,7 +87,9 @@ Which normally means plug in a UEFI-capable USB stick containing the installer f
 
 Having installed the drives, you'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
 
-## Install your operating system(s)
+## Install your operating system(s) and drivers
 
 We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this for every machine I come across, but a dual-boot rig could be useful.
+
+There are sufficient considerations in operating system installs that this section is being written as multiple HOWTOs; not everything I am doing is applicable to all situations. FIXME: links.
 
