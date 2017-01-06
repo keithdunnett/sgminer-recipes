@@ -1,8 +1,6 @@
 # Building a GPU mining rig
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017.
-
-This first page covers the building of the hardware up to the point of operating system installation.
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This first page covers the building of the hardware up to the point of operating system installation; from there we explore options for dual-booting with Windows as well as installing and configuring Ubuntu 16.04.1.
 
 ## Assemble the base system hardware
 
@@ -78,25 +76,5 @@ Having installed the drives, you'll want to set the order of boot devices in UEF
 
 ## Install your operating system(s)
 
-We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them.
+We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this across the board, but a dual-boot rig could be quite useful.
 
-### Dual boot: Windows 10 & Ubuntu 16.04.1
-
-For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this across the board, but a dual-boot rig could be quite useful.
-
-#### Upgrading to Windows 10 Pro from Windows 7 Pro
-
-Microsoft still provides a free upgrade to Windows 10 for users of assistive technology (I in fact am, although they don't check), so it is possible to equip a machine with Windows 10 Pro for the cost of a Windows 7 Pro licence and a bit of time and patience. To get this to work involved:
-
-- buying a Win 7 Pro licence key
-- finding an OEM install ISO and making a USB installer with Rufus
-- installing and activating Win 7 Pro
-- installing Internet Explorer 11
-- downloading and running the Windows 10 upgrade tool from Microsoft
-- allowing the Windows 10 Upgrade Assistant to download and prepare the upgrade
-
-
-
-#### Windows 10 Pro
-
-#### Ubuntu 16.04.1 LTS
