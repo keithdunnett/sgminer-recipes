@@ -1,6 +1,6 @@
 # Install Windows & dual boot with Ubuntu
 
-Installing and using Windows is not a priority aspect of setting up a Linux mining rig, but if you want the ability to flash 
+Installing and using Windows is not generally a priority aspect of setting up a Linux mining rig, but if you want the ability to flash 
 RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or simply evaluate both Windows and Linux on the same hardware, a dual boot setup may well be indicated.
 
 To achieve that, we install Windows first and Linux second. This page examines the process I used of installing Win 7 Professional with an OEM licence, updating it, taking a clone of it for posterity and then upgrading it to Windows 10 Professional, followed by getting Windows 10 to dual-boot with Ubuntu 16.04.1 LTS. Those who have Windows 10 installed may wish to skip to the section on setting up dual boot.
@@ -111,8 +111,29 @@ I had a couple of unexplained issues in the course of the upgrade to Windows 10 
 - An Ubuntu 16.04.1 USB key suffered damage to its EFI partition and would not boot.
 
 
+# Section 3: Install & configure Windows 10 Professional
 
-# Section 3: Shrink Windows 10 in preparation for dual boot
+## 3.1 Get Windows 10 installed if you haven't already
+
+In my case, I've arrived at a Windows 10 Professional install by way of an upgrade as described above. You could equally well install Windows 10 directly and license it accordingly, or be implementing a small rig on a COTS PC with Windows 10 pre-installed.  
+
+## 3.2 Shrink Windows 10 in preparation for dual boot (optional)
+
+This assumes you intend to boot Windows 10 and Ubuntu 16.04.1 from the same SSD, which is entirely feasible, if given to breaking your boot sooner or later. It would equally be possible to install a second SSD for a second operating system, in which case no need to shrink the Windows 10 install. If you do need to, you can do this in one of two ways.
+
+### Windows 10 Disk Management
+
+### Linux Live USB + gparted
+
+## 3.3 Configure Windows 10 for remote desktop access
+
+
+## 3.4 Configure Windows 10 for bios editing and flashing
+
+## 3.5 Configure Windows 10 for GPU mining (MAYBE, NOT MY AREA OF EXPERTISE)
+
+
+
 
 We assume here that the intention is to fit the Windows 10 
 
