@@ -1,6 +1,6 @@
 # Building a GPU mining rig
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This first page covers the building of the hardware up to the point of operating system installation; from there we explore options for dual-booting with Windows as well as installing and configuring Ubuntu 16.04.1.
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This first page covers the building of the hardware up to the point of operating system installation; from there we explore options for dual-booting with Windows, as well as for installing and configuring Ubuntu 16.04.1 in its own right.
 
 ## Assemble the base system hardware
 
@@ -76,5 +76,5 @@ Having installed the drives, you'll want to set the order of boot devices in UEF
 
 ## Install your operating system(s)
 
-We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this across the board, but a dual-boot rig could be quite useful.
+We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this for every machine I come across, but a dual-boot rig could be useful.
 
