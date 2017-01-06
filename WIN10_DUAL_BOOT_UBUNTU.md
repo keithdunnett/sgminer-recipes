@@ -139,11 +139,13 @@ We assume here that the intention is to fit the Windows 10
 
 # Section 4: Install & configure Ubuntu 16.04.1 LTS
 
-## Install Ubuntu 16.04.1 LTS
+## 4.1 Install Ubuntu 16.04.1 LTS
 
 ### Installation media
 
-To install in UEFI mode, you will need a UEFI-ready USB key with the Ubuntu installer on it. One of the easiest ways to produce this is to download the ISO under Windows and use Rufus as for Windows installs. Make sure when creating the USB key to select "GPT partitioning schema for UEFI" to have it install in UEFI mode
+To install in UEFI mode, you will need a UEFI-ready USB key with the Ubuntu installer on it. One of the easiest ways to produce this is to download the ISO under Windows and use Rufus as for Windows installs. Make sure when creating the USB key to select "GPT partitioning schema for UEFI" to have it install in UEFI mode.
+
+Fixme: Linux instructions
 
 ### Running the Ubuntu installer
 
@@ -159,9 +161,17 @@ apt update
 apt --list-upgradable
 apt upgrade
 ```
+
+## 4.2 Configure Ubuntu 16.04.1 for dual boot (optional)
+
+## 4.3 Configure Ubuntu 16.04.1 for console-only operation (optional)
+
+## 4.4 Configure Ubuntu 16.04.1 for remote access
+
 ### Enable SSH access
 
 
+## 4.5 Configure Ubuntu 16.04.1 for GPU mining
 
 ### Install AMDAPPSDK3.0 & amdgpu-pro 16.50 (or newer)
 
@@ -169,5 +179,5 @@ apt upgrade
 
 
 
-# Section 5: 
+# Section 5: Installing and setting up your graphics cards
 
