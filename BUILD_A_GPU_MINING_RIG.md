@@ -1,10 +1,10 @@
 # Building a GPU mining rig
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate, hardware is fairly typical of that used for Ethereum mining in early 2017.
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017.
 
 This first page covers the building of the hardware up to the point of operating system installation.
 
-## Assemble the hardware
+## Assemble the base system hardware
 
 ### Assemble the CPU, motherboard and memory
 
@@ -39,6 +39,8 @@ This board takes 24-pin ATX, 8-pin EPS12V CPU connector and two Molex for extra 
 Once we put it all into into a crate, it'll look a bit like this:
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_183125.JPG "Crated up")
+
+### Hardware issues deferred pending operating system install
 
 ### Prepare your environment to set up a new machine 
 
