@@ -1,8 +1,12 @@
 # Building a GPU mining rig
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This first page covers the building of the hardware up to the point of operating system installation; from there we explore options for dual-booting with Windows, as well as for installing and configuring Ubuntu 16.04.1 in its own right.
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. 
+
+This first page covers the building of the hardware up to the point of operating system installation; from there we explore options for dual-booting with Windows, as well as for installing and configuring Ubuntu 16.04.1 in its own right.
 
 ## Assemble the base system hardware
+
+This is not a treatise on choosing the optimal hardware for mining; 
 
 ### Assemble the CPU, motherboard and memory
 
