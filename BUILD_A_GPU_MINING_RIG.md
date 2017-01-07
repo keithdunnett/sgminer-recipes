@@ -1,13 +1,13 @@
 # Building a GPU mining rig
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. 
-
-This first page covers the building of the hardware up to the point of operating system installation; from there we explore options for dual-booting with Windows, as well as for installing and configuring Ubuntu 16.04.1 in its own right.
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it in a half-HOWTO, half photo ournal. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This page covers the building of the hardware up to the point of operating system installation; from there we explore dual-booting with Windows, as well as for installing and configuring Ubuntu 16.04.1 in its own right.
 
 ## Assemble the base system hardware
 
 This is not a treatise on the perfect hardware for mining, which varies with time and place, but the list of hardware I'm 
 using for this rig is as follows:
+
+### Rig components
 
 - Corsair AX1200i power supply
 - ASRock H81 Pro BTC motherboard
@@ -16,6 +16,13 @@ using for this rig is as follows:
 - ADATA 120GB solid state drive
 - 6 x Sapphire RX470 Nitro+ graphics cards
 - 6 x PCIe 1x-16x powered risers
+
+### Other components used during setup
+
+- VGA monitor
+- keyboard
+- mouse
+- USB flash disks x 2
 
 ### Assemble the CPU, motherboard and memory
 
