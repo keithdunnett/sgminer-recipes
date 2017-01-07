@@ -51,7 +51,11 @@ Once we put it all into into a crate, it'll look a bit like this:
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_183125.JPG "Crated up")
 
-### Hardware issues deferred pending operating system install
+### Hardware issues to postpone
+
+The first-time rig builder will be understandably eager to get the graphics cards and risers installed, and who'd blame them? In practice, if you're building with a mixture of new and second-hand parts (or even if not), it may not make much sense to start unboxing the GPUs until you have a working rig onto which to install them. You may also find it quicker and easier to install operating system(s) and driver(s) without multiple GPUs connected.
+
+For the same reason, I prefer to leave issues of the physical rig layout open-ended until the rig is working. Photos abound of neatly-framed rigs with GPUs lined up a couple of inches apart; my Sapphire Nitros vent hot air through the top of the cards as well as the ends, so 6 cards in a row means quite a temperature gradient as one heats up the next. So, let's crack on with getting the machine ready.
 
 ### Prepare your environment to set up a new machine 
 
@@ -61,7 +65,7 @@ Though the rig will eventually run headless, we'll need keyboard, video and mous
 
 The motherboard has VGA and HDMI outputs; I'm already using the only HDMI-capable display I have, so a 17" 1024x768 screen is what I'll be using initially. You could use an existing monitor, or even an HTDV depending on what your motherboard supports.
 
-#### HIDs, network and power
+#### HID, network and power
 
 Any old keyboard and mouse should do. I'm using a USB mouse and a PS/2 keyboard, as that's what I had. Wired Ethernet is by far the easiest when installing operating systems, so a cable is plugged in from the router.
 
