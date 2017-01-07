@@ -89,39 +89,44 @@ to have it read /dev/sda in 16MB chunks and send them across the network. This a
 the whole 120GB disk in just over 20 minutes, and it provides me with the ability to roll back or to clone it, deactivating and 
 relicensing as needed, if I should later have cause. That done, I booted back into Windows 7 and ran the Windows 10 Upgrade Adviser anew.
 
-# Section 2: Upgrade from Win 7 Pro to Win 10 Pro
+# Section 2: Upgrade to Windows 10 Professional
 
-## Windows 10 free upgrade for customers who use assistive technologies
+## 2.1 Windows 10 free upgrade for customers who use assistive technologies
 
-The free upgrade offer expired July 29th 2016; availability of the free Windows 10 upgrade thereafter is, as Microsoft explains, aimed at users of assistive technologies. The author has dyspraxia and makes routine use of both voice recognition and text-to-speech technologies, so has no ethical reservations in availing of Microsoft's continuing offer, but it's not necessary to have a disability in order to use and to benefit from assistive technologies. 
+The free upgrade offer expired July 29th 2016; availability of the free Windows 10 upgrade thereafter is, as Microsoft explains, aimed at users of assistive technologies. 
 
-## Windows 10 upgrade procedure
+The author has dyspraxia and makes *bona fide* use of both voice recognition and text-to-speech technologies, so has no ethical reservations in availing of Microsoft's continuing offer, but it's not necessary to have a disability in order to use such technologies. Users wondering if they can take advantage for a free upgrade should consider whether they use such things as voice recognition; it does seem to be open to anyone who chooses to avail of it.
+
+## 2.2 Windows 10 upgrade procedure
 
 With a fully up to date Win 7 Pro install, running the Windows 10 Upgrade Advisor proceeded to download and prepare the Windows 10 install files. Instructed to go ahead, it duly installed Windows 10 (with a couple of reboots in the process) and by and large, it behaved itself. It lost my keyboard settings and defaulted me to English(US) but that was fairly easily fixed in the Windows settings.
 
-## Windows 10 drivers
+## 2.3 Windows 10 drivers
 
-Drivers were installed from the ASRock website for Windows 10. The generic drivers shipped with the OS do a reasonable job of compatibility with the ASRock H81 Pro BTC, but there are more specific drivers for some parts of the chipset and certain on-board peripherals.
+Drivers were installed from the ASRock website for Windows 10. The generic drivers shipped with Windows 10 do a reasonable job of compatibility with the ASRock H81 Pro BTC, but there are more specific drivers for some parts of the chipset and certain on-board peripherals.
 
-## Windows 10 issues
+## 2.4 Windows 10 issues
 
-I had a couple of unexplained issues in the course of the upgrade to Windows 10 and setting up afterwards. These were not sufficiently relialy 
+I had a couple of unexplained issues in the course of the upgrade to Windows 10 and setting up afterwards. These were not sufficiently reproducible to complain bitterly.
 
 - The machine froze a couple of times, requiring a hard reset.
-- An Ubuntu 16.04.1 USB key suffered damage to its EFI partition and would not boot.
+- An Ubuntu 16.04.1 USB key suffered damage to its EFI partition and would not boot. Windows 10 happily made another, though.
 
 
 # Section 3: Install & configure Windows 10 Professional
 
-## 3.1 Get Windows 10 installed if you haven't already
+## 3.1 Get Windows 10 installed
 
-In my case, I've arrived at a Windows 10 Professional install by way of an upgrade as described above. You could equally well install Windows 10 directly and license it accordingly, or be implementing a small rig on a COTS PC with Windows 10 pre-installed.  
+In my case, I've arrived at a Windows 10 Professional install by way of an upgrade as described above. You could equally well install Windows 10 directly and license it accordingly, or be implementing a small rig on an off-the-shelf PC with Windows 10 pre-installed. Whichever way, hereinafter we'll assume that Windows 10 is installed and running on your primary SSD. If you do need to install Windows 10, you can use Microsoft's [Media Creation Tool](https://www.microsoft.com/software-download/windows10) to produce a USB installer, or download ISO files from the same link under Linux.
 
 ## 3.2 Shrink Windows 10 in preparation for dual boot (optional)
 
 This assumes you intend to boot Windows 10 and Ubuntu 16.04.1 from the same SSD, which is entirely feasible, if given to breaking your boot sooner or later. It would equally be possible to install a second SSD for a second operating system, in which case no need to shrink the Windows 10 install. If you do need to, you can do this in one of two ways.
 
 ### Windows 10 Disk Management
+
+You can shrink your Windows partition using the inbuilt Disk Management tool; [instructions here](http://www.howtogeek.com/howto/windows-vista/resize-a-partition-for-free-in-windows-vista/).
+
 
 ### Linux Live USB + gparted
 
@@ -138,6 +143,8 @@ This assumes you intend to boot Windows 10 and Ubuntu 16.04.1 from the same SSD,
 We assume here that the intention is to fit the Windows 10 
 
 # Section 4: Install & configure Ubuntu 16.04.1 LTS
+
+This section describes configuring Ubuntu 16.04.1 LTS from install to running sgminer as a headless GPU mining rig. 
 
 ## 4.1 Install Ubuntu 16.04.1 LTS
 
@@ -162,14 +169,57 @@ apt --list-upgradable
 apt upgrade
 ```
 
-## 4.2 Configure Ubuntu 16.04.1 for dual boot (optional)
+## 4.2 Configure Ubuntu 16.04.1 for UEFI dual boot (optional)
 
-## 4.3 Configure Ubuntu 16.04.1 for console-only operation (optional)
+Ubuntu will normally configure the proper entries in the GRUB menu where it detects another operating system present, and GRUB will happily hand off to the Windows Boot Manager where so requested, so sometimes there's not much configuration to be done.
 
-## 4.4 Configure Ubuntu 16.04.1 for remote access
+### 4.2.1 Configure GRUB default behaviour
 
-### Enable SSH access
+For my purposes I want to boot Ubuntu by default and boot Windows only when I say so; this is the default behaviour as configured by Ubuntu, and it can allow some flexibility for toggling between operating systems (see below). However, if for any reason you do actually want to boot Windows more than once (!) you can, optionally, set
 
+```
+GRUB_SAVEDEFAULT=true
+GRUB_DEFAULT=saved
+```
+
+in /etc/default/grub and then `update-grub` to make choices persistent, i.e. continue to boot Ubuntu until I manually switch to Windows and vice versa. Unless you're aiming to run Windows most of the time, you probably don't want this, as defaulting to Ubuntu and changing that where required with `grub-reboot` is more flexible.
+
+### 4.2.2 Be aware of the `grub-reboot` command in Linux
+
+This allows you to specify a particular GRUB menu entry (by name or number) to be selected at next reboot, one time only. Thus a command such as `grub-reboot "Windows Boot Manager (on /dev/sda1)" && reboot` will have the system reboot to Windows 10; rebooting from Windows 10 will default to Linux. With adequate remote access to both operating systems, this can be used to facilitate remote-access dual-boot with remote network computing, but that's getting fancy.
+
+## 4.3 Configure Ubuntu 16.04.1 for remote access
+
+There is a policy decision to be taken at this point regarding how much use we want of a GUI on a Linux mining rig and how much prefer to be able to do over an SSH connection. There are arguments on both sides; as a simple example, it may prove simpler to load up Firefox and download the amdgpu-pro drivers and APP SDK on the machine itself. Unless you already have them on your desktop, as I do, in which case transferring the files with scp is no hassle.
+
+So, it's horses for courses. In this HOWTO, I adopt an approach that does almost everything over an SSH connection and optionally allows for running without Xorg (as suits a headless mining rig). However, I also run a mixed-use desktop where Xorg on the integrated GPU co-exists with some AMD GPUs dedicated to mining, so we'll endeavour to persuade this rig to work with and without Xorg.
+
+### 4.3.1 Enable SSH access
+
+#### 4.3.1.1 Install the OpenSSH server
+
+Having previously updated the packages, it's as easy as:
+
+`apt install openssh-server`
+
+#### 4.3.1.2 Enable root access by public-key based authentication
+
+For a dedicated mining rig, we'll mostly want to work as root so as to have full access to logs, drivers, package installs, process priorities and suchlike. To log in as root, we allow access by public key not by password, so we need firstly to log in as an unprivileged user, then gain root privileges, create a .ssh/authorized_keys file in root's home directory, populate it with the public keys that should have access and set the proper file permissions, after which we should be able to log in as root from a machine with that key. If you've no idea how passwordless SSH access works, have a read of [this article](http://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/), or (for console newbies) for a 4m30s screencap of me setting it up with an existing SSH identity, mistakes and all, [try this](https://asciinema.org/a/7otbzhctnon4tje4xfmadu1ts).
+
+## 4.4 Configure Ubuntu 16.04.1 for console-only operation (optional)
+
+If you intend to run a headless mining rig, it's perfectly feasible to force Xorg onto the integrated GPU (and maybe we'll look at that later) but it's not in fact necessary to run Xorg at all. To boot into runlevel 3 (console) on a systemd distro such as Ubuntu 16.04.1, add "systemd.unit=multi-user.target" to GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub, update grub and the system will boot to console. If we fancy keeping the choice available at boot time (I've not done this before!), it *should* be possible to default to console boot as above, and create another script in /etc/grub.d to generate parallel menu entries for a graphical boot target for each Linux kernel by processing the output of /etc/grub.d/10_linux and making a couple of changes to the output with sed. Adding something such as:
+
+```
+#!/bin/bash
+set -e
+source /etc/grub.d/10_linux | sed -e "s/multi-user.target/graphical.target/g" | sed -e "s/Ubuntu/Ubuntu\+GUI/g"
+```
+into a file 11_linux_gui in /etc/grub.d/ will do the trick. If you'd like to watch the (warts and all) transcript:
+
+[![asciicast](https://asciinema.org/a/c2ily1pbz3jpq6cbc81eyhriq.png)](https://asciinema.org/a/c2ily1pbz3jpq6cbc81eyhriq)
+
+So, whilst we still have Xorg installed, our default is now to boot to Ubuntu in runlevel 3 (multi-user, console) and we retain the options to boot Ubuntu with the GUI or Windows 10 Professional. So far, so good.
 
 ## 4.5 Configure Ubuntu 16.04.1 for GPU mining
 
