@@ -4,7 +4,7 @@ RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or sim
 
 To achieve that, we install Windows first and Linux second. This page examines the process I used of installing Win 7 Professional with an OEM licence, updating it, taking a clone of it for posterity and then upgrading it to Windows 10 Professional, followed by getting Windows 10 to dual-boot with Ubuntu 16.04.1 LTS. Those who have Windows 10 installed may wish to skip to the section on setting up dual boot.
 
-# Section 1: Windows 7 install
+# Section 1: Installing Windows 7 Professional
 
 ## Windows 7 Professional x64 OEM installation notes
 
@@ -92,7 +92,7 @@ relicensing as needed, if I should later have cause. That done, I booted back in
 
 ## 2.1 Windows 10 free upgrade for customers who use assistive technologies
 
-The free upgrade offer expired July 29th 2016; availability of the free Windows 10 upgrade thereafter is, as Microsoft explains, aimed at users of assistive technologies. 
+The free upgrade offer for general use expired July 29th 2016; availability of the free Windows 10 upgrade thereafter is, as Microsoft explains, aimed at users of assistive technologies. 
 
 The author has dyspraxia and makes *bona fide* use of both voice recognition and text-to-speech technologies, so has no ethical reservations in availing of Microsoft's continuing offer, but it's not necessary to have a disability in order to use such technologies. Users wondering if they can take advantage for a free upgrade should consider whether they use such things as voice recognition; it does seem to be open to anyone who chooses to avail of it.
 
@@ -126,8 +126,9 @@ This assumes you intend to boot Windows 10 and Ubuntu 16.04.1 from the same SSD,
 
 You can shrink your Windows partition using the inbuilt Disk Management tool; [instructions here](http://www.howtogeek.com/howto/windows-vista/resize-a-partition-for-free-in-windows-vista/).
 
-
 ### Linux Live USB + gparted
+
+Or, from a live Linux USB (the one in the Ubuntu install ISO will do fine), run 'gparted' and shrink the partition from there. Either way, once your Windows 10 install is resized down to about half the disk, you can allow the Ubuntu installer to use the free space as it sees fit.
 
 ## 3.3 Configure Windows 10 for remote desktop access
 
@@ -223,11 +224,16 @@ So, whilst we still have Xorg installed, our default is now to boot to Ubuntu in
 ## 4.5 Configure Ubuntu 16.04.1 for OpenCL GPU mining
 
 ### Install AMD graphics driver & Accelerated Parallel Processing SDK
+
+You'll need to download these directly from AMD - though by the time you're looking at a rig of this sort, you knew that. They'll install easily enough over SSH, as follows.
+
 [![asciicast](https://asciinema.org/a/4l9p51r23a9vs8v6xidchznr3.png)](https://asciinema.org/a/4l9p51r23a9vs8v6xidchznr3?t=1:40)
 
+Don't expect them to find anything just yet, of course. We'll need a GPU installed first.
 
 
 
 
-# Section 5: Installing and setting up your graphics cards
+
+# Section 5: Setting up your GPUs
 
