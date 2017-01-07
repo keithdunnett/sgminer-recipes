@@ -1,5 +1,4 @@
-# Install Windows & dual boot with Ubuntu
-
+# Dual Boot Win10 + Ubuntu mining rig
 Installing and using Windows is not generally a priority aspect of setting up a Linux mining rig, but if you want the ability to flash 
 RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or simply evaluate both Windows and Linux on the same hardware, a dual boot setup may well be indicated.
 
@@ -204,7 +203,7 @@ Having previously updated the packages, it's as easy as:
 
 #### 4.3.1.2 Enable root access by public-key based authentication
 
-For a dedicated mining rig, we'll mostly want to work as root so as to have full access to logs, drivers, package installs, process priorities and suchlike. To log in as root, we allow access by public key not by password, so we need firstly to log in as an unprivileged user, then gain root privileges, create a .ssh/authorized_keys file in root's home directory, populate it with the public keys that should have access and set the proper file permissions, after which we should be able to log in as root from a machine with that key. If you've no idea how passwordless SSH access works, have a read of [this article](http://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/), or (for console newbies) for a 4m30s screencap of me setting it up with an existing SSH identity, mistakes and all, [try this](https://asciinema.org/a/7otbzhctnon4tje4xfmadu1ts).
+For a dedicated mining rig, we'll mostly want to work as root so as to have full access to logs, drivers, package installs, process priorities and suchlike. To log in as root, we allow access by public key not by password, so we need firstly to log in as an unprivileged user, then gain root privileges, create a .ssh/authorized_keys file in root's home directory, populate it with the public keys that should have access and set the proper file permissions, after which we should be able to log in as root from a machine with that key. If you've no idea how passwordless SSH access works, have a read of [this article](http://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/), or (for console newbies) for a 4m30s screencap of me setting it up with an existing SSH identity, mistakes and all, [try this](https://asciinema.org/a/7otbzhctnon4tje4xfmadu1ts). You may also need to `chmod 600 /root` if StrictModes is set.
 
 ## 4.4 Configure Ubuntu 16.04.1 for console-only operation (optional)
 
@@ -221,9 +220,10 @@ into a file 11_linux_gui in /etc/grub.d/ will do the trick. If you'd like to wat
 
 So, whilst we still have Xorg installed, our default is now to boot to Ubuntu in runlevel 3 (multi-user, console) and we retain the options to boot Ubuntu with the GUI or Windows 10 Professional. So far, so good.
 
-## 4.5 Configure Ubuntu 16.04.1 for GPU mining
+## 4.5 Configure Ubuntu 16.04.1 for OpenCL GPU mining
 
-### Install AMDAPPSDK3.0 & amdgpu-pro 16.50 (or newer)
+### Install AMD graphics driver & Accelerated Parallel Processing SDK
+[![asciicast](https://asciinema.org/a/4l9p51r23a9vs8v6xidchznr3.png)](https://asciinema.org/a/4l9p51r23a9vs8v6xidchznr3?t=1:40)
 
 
 
