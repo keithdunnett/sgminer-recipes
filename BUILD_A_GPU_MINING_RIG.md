@@ -1,11 +1,10 @@
-# Building a GPU mining rig
+# Building a GPU mining rig - WIP JAN 2017
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it in a half-HOWTO, half photo ournal. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This page covers the building of the hardware up to the point of operating system installation; from there we explore dual-booting with Windows, as well as for installing and configuring Ubuntu 16.04.1 in its own right.
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it in a half-HOWTO, half photo journal. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This page covers the building of the hardware up to the point of operating system installation; from there we'll explore dual-booting with Windows and Ubuntu 16.04.1, setting up the GPUs and getting the rig mining. 
 
-## Assemble the base system hardware
+## Chapter 1: Hardware Assembly
 
-This is not a treatise on the perfect hardware for mining, which varies with time and place, but the list of hardware I'm 
-using for this rig is as follows:
+This is not a treatise on the perfect hardware for mining, which varies according to time and place, but the list of hardware I'm using in this rig is as follows:
 
 ### Rig components
 
@@ -23,8 +22,11 @@ using for this rig is as follows:
 - keyboard
 - mouse
 - USB flash disks x 2
+    - Windows installer
+    - Ubuntu live installer
+- Edimax SP2101-W mains power monitoring plug
 
-### Assemble the CPU, motherboard and memory
+### Assemble CPU, motherboard and memory
 
 Here we have an ASRock H81 Pro BTC, to which I've fitted 2GB of RAM, an Intel Celeron G1840 CPU and the stock cooler. The switch on the white wire is a simple push button switch that acts as a power switch when connected to the relevant "PWRBTN" pins on the motherboard. 
 
@@ -42,13 +44,13 @@ We're about to turn this nice, clean picture into a forest of cables, through wh
 
 Tip: if you have a spare SATA cable, extra to the one you'll need for the primary SSD, it's no bad idea to install it onto the second SATA3 port and leave it accessible. Makes life much easier if you later want to clone or replace the disk.
 
-### Assemble the PSU and power cables
+### Assemble PSU and power cables
 
 Similarly, if you're using a modular PSU, it's wise to assemble the required cables to the PSU before you're working in a confined space. In the photo below, the cables in the foreground are those needed by the motherboard, and in the background are cables providing 6 x Molex for the PCIe risers and 6 x 8-pin PCIe connectors for the GPUs.
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_161000.JPG "Corsair AX1200i")
 
-### Connect the power cables to the motherboard
+### Connect power cables to the motherboard
 
 This board takes 24-pin ATX, 8-pin EPS12V CPU connector and two Molex for extra power to the PCIe slots.
 
@@ -98,18 +100,17 @@ Which normally means plug in a UEFI-capable USB stick containing the installer f
 
 Having installed the drives, you'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
 
-## Install your operating system(s) and drivers
+## Install operating system(s) and drivers
 
-We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use. I don't plan on doing this for every machine I come across, but a dual-boot rig could be useful.
+We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use.
 
-There are sufficient considerations in operating system installs that this section is being written as multiple HOWTOs; not everything I am doing is applicable to all situations. FIXME: links.
-# Dual Boot Win10 + Ubuntu mining rig
-Installing and using Windows is not generally a priority aspect of setting up a Linux mining rig, but if you want the ability to flash 
-RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or simply evaluate both Windows and Linux on the same hardware, a dual boot setup may well be indicated.
+# Chapter 2: Dual Boot Win10 + Ubuntu mining rig
+
+Installing and using Windows is not generally a priority aspect of setting up a Linux mining rig, but if you want the ability to flash RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or simply evaluate both Windows and Linux on the same hardware, a dual boot setup may well be indicated.
 
 To achieve that, we install Windows first and Linux second. This page examines the process I used of installing Win 7 Professional with an OEM licence, updating it, taking a clone of it for posterity and then upgrading it to Windows 10 Professional, followed by getting Windows 10 to dual-boot with Ubuntu 16.04.1 LTS. Those who have Windows 10 installed may wish to skip to the section on setting up dual boot.
 
-# Section 1: Installing Windows 7 Professional
+# 2.1 Installing Windows 7 Professional
 
 ## Windows 7 Professional x64 OEM installation notes
 
@@ -193,23 +194,23 @@ to have it read /dev/sda in 16MB chunks and send them across the network. This a
 the whole 120GB disk in just over 20 minutes, and it provides me with the ability to roll back or to clone it, deactivating and 
 relicensing as needed, if I should later have cause. That done, I booted back into Windows 7 and ran the Windows 10 Upgrade Adviser anew.
 
-# Section 2: Upgrade to Windows 10 Professional
+# 2.2: Upgrade to Windows 10 Professional
 
-## 2.1 Windows 10 free upgrade for customers who use assistive technologies
+## 2.2.1 Windows 10 free upgrade for customers who use assistive technologies
 
 The free upgrade offer for general use expired July 29th 2016; availability of the free Windows 10 upgrade thereafter is, as Microsoft explains, aimed at users of assistive technologies. 
 
 The author has dyspraxia and makes *bona fide* use of both voice recognition and text-to-speech technologies, so has no ethical reservations in availing of Microsoft's continuing offer, but it's not necessary to have a disability in order to use such technologies. Users wondering if they can take advantage for a free upgrade should consider whether they use such things as voice recognition; it does seem to be open to anyone who chooses to avail of it.
 
-## 2.2 Windows 10 upgrade procedure
+## 2.2.2 Windows 10 upgrade procedure
 
 With a fully up to date Win 7 Pro install, running the Windows 10 Upgrade Advisor proceeded to download and prepare the Windows 10 install files. Instructed to go ahead, it duly installed Windows 10 (with a couple of reboots in the process) and by and large, it behaved itself. It lost my keyboard settings and defaulted me to English(US) but that was fairly easily fixed in the Windows settings.
 
-## 2.3 Windows 10 drivers
+## 2.2.3 Windows 10 drivers
 
 Drivers were installed from the ASRock website for Windows 10. The generic drivers shipped with Windows 10 do a reasonable job of compatibility with the ASRock H81 Pro BTC, but there are more specific drivers for some parts of the chipset and certain on-board peripherals.
 
-## 2.4 Windows 10 issues
+## 2.2.4 Windows 10 issues
 
 I had a couple of unexplained issues in the course of the upgrade to Windows 10 and setting up afterwards. These were not sufficiently reproducible to complain bitterly.
 
@@ -332,7 +333,7 @@ So, whilst we still have Xorg installed, our default is now to boot to Ubuntu in
 
 You'll need to download these directly from AMD - though by the time you're looking at a rig of this sort, you knew that. They'll install easily enough over SSH. Don't expect them to find anything just yet, of course. We'll need a GPU installed first, but before we go back to playing around with the hardware, we may as well try to get the rest of the software we need installed.
 
-### 4.5.2 Install sgminer and any build dependencies
+### 4.5.2 Install sgminer and any dependencies
 
 This being a fresh install of Ubuntu 16.04.1, we'll uncover any dependencies that need to be installed. Note that installing amdgpu-pro pulled in some of the compiler components that we need.
 
