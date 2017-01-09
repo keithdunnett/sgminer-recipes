@@ -9,6 +9,13 @@
 - ADATA 120GB SSD 
 - 2GB DDR3
 
+### Rig software
+
+- Ubuntu 16.04.1 LTS
+- AMDGPU-PRO video driver v16.40-348864
+- AMD APP SDK v3.0
+- sgminer-gm v5.5.4
+
 
 30W baseline consumption (doing nothing), 48W compiling with 3 parallel threads.
 
@@ -58,9 +65,9 @@ increase over stock fan speeds will reliably be required. On my current settings
 - target of 50 degrees has the GPU fans in a range 60-100% (of increased max. fan speed 2550rpm)
     - reported GPU temperatures range from 50-58 degrees with most fans staying at 100%
 
-Currently, these settings are not "instant crash" material but leave something to be desired for stability; the new rig typically sees a GPU drop out after a few hours. Similar settings are stable enough on an identical rig, but close enough to the limits that the layout of the rig and the proximity of cards to one another matters; it is anticipated that further tweaking may be needed. 
+Currently, these settings are not "instant crash" material but leave something to be desired for stability; the new rig typically sees a GPU drop out after a few hours. Similar settings are stable enough on an identical rig, but close enough to the limits that the layout of the rig and the proximity of cards to one another makes a difference; it's anticipated that further tweaking may be needed. 
 
-# Resilience
+##### Resilience
 
 
  
