@@ -49,7 +49,7 @@ from this hardware.
 
 
 
-##### Stability notes
+##### Stability
 
 Rig stability depends heavily on cooling, certainly when overclocking memory. An aggressive fan control profile, a disproportionately low temperature target and an 
 increase over stock fan speeds will reliably be required. On my current settings:
@@ -58,9 +58,11 @@ increase over stock fan speeds will reliably be required. On my current settings
 - target of 50 degrees has the GPU fans in a range 60-100% (of increased max. fan speed 2550rpm)
     - reported GPU temperatures range from 50-58 degrees with most fans staying at 100%
 
- Currently, these settings are not "instant crash" material but leave something to be desired for stability; the new rig typically 
- sees a GPU drop out after a few hours. Similar settings are stable enough on an identical rig, but close enough to the limits that the layout of the 
- rig and the proximity of cards to one another matters; it is anticipated that further tweaking might be required here.
+Currently, these settings are not "instant crash" material but leave something to be desired for stability; the new rig typically sees a GPU drop out after a few hours. Similar settings are stable enough on an identical rig, but close enough to the limits that the layout of the rig and the proximity of cards to one another matters; it is anticipated that further tweaking may be needed. 
+
+# Resilience
+
+
  
  
     
