@@ -21,7 +21,7 @@ configs are in use. There are various stages at which this can fail:
 - for ethash, DAG generation must initialise correctly
 - valid shares must be found, transmitted to and accepted by our pools
 
-and broadly two types of failure condition for the purpose of prevention and reaction:
+and broadly two types of failure condition, for the purpose of prevention and reaction:
 
 - reliable failures 
 - intermittent faults
@@ -43,13 +43,19 @@ Telling the system to run sgminer on startup is as simple as putting a command i
    - runtime control to be done using the API
 
 Generally this works well, provided DNS resolution and GPU initialisation work first time. Where they don't, sgminer doesn't
-handle this too gracefully 
+handle this too gracefully and we may need to provide workarounds.
 
 ## 2. Handle failure conditions during sgminer startup
 
 ### 2.1 DNS resolution failures
 
+
+
 ### 2.2 GPU initialisation failures
+
+
+### 2.3 Detecting and responding to intermittent faults
+
 
 ## 3. Handle failure conditions during mining
 
@@ -63,11 +69,20 @@ Additionally, one can have quota-based load balancing *and* failover by declarin
 
 #### 3.1.2 ISP outages
 
-They happen, not much that can usefully be done about it. Failover connectivity with dual WAN connections is a nice idea, but unlikely to justify the cost of two connections for the typical home mining setup. What we can usefully do is to test that a failure of the Internet connection is in fact on the ISP's side, out of our direct control or influence.
+They happen, not much that can usefully be done about it. Failover connectivity with dual WAN connections is a nice idea, but unlikely to justify the cost of two connections for the typical home mining setup. What we can usefully do is to test that an apparent failure of the Internet connection is in fact on the ISP's side, out of our direct control or influence, and not a local problem as described below.
 
 #### 3.1.3 Local network/router outages
 
-### 3.2 GPU outages
+### 3.2 GPU hangs and crashes
+
+sgminer does a respectable job of handling a non-responsive GPU through its events framework which can detect when a GPU ceases to work properly and trigger some action to resolve it, typically a GPU reset or a reboot. Generally this is quite successful, with some caveats:
+
+- with the amdgpu-pro driver, rebooting is the only option as the GPU reset function is unstable in kernel 4.4.x
+- problems on shutdown or startup mean a risk of going from 5/6 GPUs working to 0/6 GPUs working
+- restarting may simply mask a problem that should be fixed or prevented
+- forced restarts may be unwelcome on certain systems or at certain times
+
+
 
 ### 3.3 Zombie processes
 
