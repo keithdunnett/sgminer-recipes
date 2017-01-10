@@ -32,13 +32,20 @@ unceremoniously cut.
 - It's also a strong indicator of the need to modify the BIOS; that's a dismal figure for power efficiency. Below 6W/Mh/s is achievable
 from this hardware.
 
-### Mod BIOS #1: 1100MHz GPU, 2150MHz memclock, 1750MHz memory strap, 2550rpm max fan
+### Mod BIOS #1: 1100MHz GPU, 2150MHz memclock
 
 - 120W baseline consumption (doing nothing, min GPU clock lowered from 300 to 250MHz)
     - 30W for base system
     - 90W for 6 GPUs at idle
 
-#### 1100MHz memclock (default in this BIOS)
+#### BIOS settings
+
+- 1750 MHz memory timings copied to 2000MHz
+- GPU clock states set at 250/466/751/1000/1025/1050/1075/1100
+- Memory clock 
+- fan set to max. 2550rpm
+
+#### 1100MHz memclock
 
 - 925W avg. for ethash at 156.8Mh/s, 26Mh/s per card, 5.9W/Mh/s (one thread per GPU)
 - 931W avg. for ethash at 157.6Mh/s, 26.1Mh/s per card, 5.91W/Mh/s (two threads per GPU)
@@ -75,11 +82,7 @@ Still wasn't stable. Looking at the BIOS from a working rig, I see that I increa
 
 ### Mod BIOS #3: 1100MHz GPU, 2150MHz memclock, 1750MHz memory strap, 2550rpm max fan, 1050mV memory, powertune 95/125/140
 
-This brings an apparent improvement in stability (early days yet!) with little change in performance or power consumption. For reasons I don't yet understand, power usage is ~3% higher than on an identical rig; this may partly be down to running the fans at full tilt. 
 
-#### 1265MHz memclock
-
-- 1004W avg. for ethash at 165Mh/s
 
 
 
