@@ -42,7 +42,8 @@ Telling the system to run sgminer on startup is as simple as putting a command i
    - with ability to reattach to the curses interface (or run in text mode if desired)
    - runtime control to be done using the API
 
-Generally this works well, provided that DNS resolution and GPU initialisation succeed. 
+Generally this works well, provided DNS resolution and GPU initialisation work first time. Where they don't, sgminer doesn't
+handle this too gracefully 
 
 ## 2. Handle failure conditions during sgminer startup
 
@@ -54,11 +55,25 @@ Generally this works well, provided that DNS resolution and GPU initialisation s
 
 ### 3.1 Network outages
 
+#### 3.1.1 Pool outages
+
+sgminer inherently handles pool failures very well; rather than a simple failover/failback approach, the use of quota-based load balancing can divide hashrate among two or three pools by default. An outage on any one pool simply divides hashrate amongst those remaining, providing a "hot spare" effect if something goes down. The utility of this will depend on the payment strategies of the pools you use and the length of any outage, but sgminer is good at keeping your hashrate connected to something.
+
+Additionally, one can have quota-based load balancing *and* failover by declaring a couple of pools as enabled with a quota of zero. These will be used only if pools with a positive quota are unavailable. Thus, if I am based in Europe, I can specify two or three European servers among which to divide hashrate by preference, but list a couple of US servers so that if European routing fails and a US server is reachable, I'll use it. 
+
+#### 3.1.2 ISP outages
+
+They happen, not much that can usefully be done about it. Failover connectivity with dual WAN connections is a nice idea, but unlikely to justify the cost of two connections for the typical home mining setup. What we can usefully do is to test that a failure of the Internet connection is in fact on the ISP's side, out of our direct control or influence.
+
+#### 3.1.3 Local network/router outages
+
 ### 3.2 GPU outages
 
 ### 3.3 Zombie processes
 
 ### 3.4 Crashed processes
+
+### 3.5 Fault logging frenzies
 
 ## 4. Logging and monitoring
 
