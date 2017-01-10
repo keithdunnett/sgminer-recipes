@@ -77,20 +77,18 @@ They happen, not much that can usefully be done about it. Failover connectivity 
 
 sgminer does a respectable job of handling a non-responsive GPU through its events framework which can detect when a GPU ceases to work properly and trigger some action to resolve it, typically a GPU reset or a reboot. Generally this is quite successful, with some caveats:
 
-- with the amdgpu-pro driver, rebooting is the only option as the GPU reset function is unstable in kernel 4.4.x
-- problems on shutdown or startup mean a risk of going from 5/6 GPUs working to 0/6 GPUs working
+- with the amdgpu-pro driver, rebooting is the only option as the GPU reset function is not stable in kernel 4.4.x
+- problems on shutdown or startup mean the risk of going from 5/6 GPUs working to 0/6 GPUs working
 - restarting may simply mask a problem that should be fixed or prevented
 - forced restarts may be unwelcome on certain systems or at certain times
 
+### 3.3 System hangs and crashes
+### 3.3.1 Crashed processes
+### 3.3.2 Zombie processes
+### 3.3.3 System lock-ups
+### 3.3.4 Excess fault logging
 
-
-### 3.3 Zombie processes
-
-### 3.4 Crashed processes
-
-### 3.5 Fault logging frenzies
-
-## 4. Logging and monitoring
+## 4. Logging, monitoring and responding
 
 ## 5. Preventative measures
 
