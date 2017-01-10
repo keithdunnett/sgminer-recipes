@@ -71,22 +71,43 @@ Additionally, one can have quota-based load balancing *and* failover by declarin
 
 They happen, not much that can usefully be done about it. Failover connectivity with dual WAN connections is a nice idea, but unlikely to justify the cost of two connections for the typical home mining setup. What we can usefully do is to test that an apparent failure of the Internet connection is in fact on the ISP's side, out of our direct control or influence, and not a local problem as described below.
 
-#### 3.1.3 Local network/router outages
+#### 3.1.3 Router outages
 
 ### 3.2 GPU hangs and crashes
 
-sgminer does a respectable job of handling a non-responsive GPU through its events framework which can detect when a GPU ceases to work properly and trigger some action to resolve it, typically a GPU reset or a reboot. Generally this is quite successful, with some caveats:
+#### 3.2.1 Event handling in sgminer
+
+sgminer does a good job of handling a non-responsive GPU through its events framework, which can detect when a GPU ceases to work properly and trigger some action to resolve it, typically a GPU reset or a reboot. Generally this is quite successful, with some caveats:
 
 - with the amdgpu-pro driver, rebooting is the only option as the GPU reset function is not stable in kernel 4.4.x
-- problems on shutdown or startup mean the risk of going from 5/6 GPUs working to 0/6 GPUs working
-- restarting may simply mask a problem that should be fixed or prevented
-- forced restarts may be unwelcome on certain systems or at certain times
+- problems on shutdown (or startup) can mean the risk of going from 5/6 GPUs working to 0/6 GPUs working
+    - trying to interact with a hung GPU will typically hang the system, preventing soft reboot
+- forced restarts may be unwelcome or intolerable on systems not dedicated to mining
+- restarting automatically could simply mask a problem that should be fixed or prevented
+
+##### 3.2.1.1 GPU 'events' in sgminer
+
+The events framework defines two event hooks, 'gpu_sick' and 'gpu_dead', which are called two minutes and ten minutes respectively after a GPU becomes unresponsive. As with amdgpu-pro we don't yet have the means to reset a GPU without rebooting we don't have much use for the latter, so we'll trigger a reboot in response to a GPU being declared sick. In their simplest form, the command line switches to achieve this are
+
+```
+--event-on gpu_sick --event-reboot-delay 10
+```
+
+but see also `--event-runcmd` if greater flexibility is required, which may be used to call an arbitrary command or script in response to the same event. That can be used simply to provide a more elaborate incantation of the `shutdown` command, or an arbitrary sequence of actions that might include fault logging, analysis of logs to determine repetition and actions such as reconfiguring sgminer to reduce intensity, drop a failing GPU, or even reboot into a secondary operating system image via grub-reboot. Such things are left as an exercise for the reader.
+
+##### 3.2.1.2 Avoid trying to restart a sick GPU
+
+Default behaviour when the 'gpu_sick' event is enabled is that sgminer tries to restart the GPU, a fine idea where the kernel and driver support doing so. For amdgpu-pro on Ubuntu 16.04.1 this is not the case, and in fact, attempting to restart an unresponsive GPU can often lock up the kernel, preventing a soft reboot from happening. The somewhat ambiguously named `--no-restart` flag will disable this attempt to restart the GPU, actively facilitating the restart of the system, and is a recommended addition when using the events framework.
+
+
+
+
 
 ### 3.3 System hangs and crashes
-### 3.3.1 Crashed processes
-### 3.3.2 Zombie processes
-### 3.3.3 System lock-ups
-### 3.3.4 Excess fault logging
+#### 3.3.1 Crashed processes
+#### 3.3.2 Zombie processes
+#### 3.3.3 System lock-ups
+#### 3.3.4 Excess fault logging
 
 ## 4. Logging, monitoring and responding
 
