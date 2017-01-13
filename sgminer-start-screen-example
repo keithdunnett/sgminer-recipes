@@ -5,7 +5,7 @@ set -e
 WALLET="0xc91B3f6a889a9963c7eaE2d5BD5Ca88a6Ae2d2EA";
 WORKER="`hostname`";
 POOL="stratum+tcp://eu1.ethermine.org:4444";
-POOL2="stratum+tcp://pool.alpereum.ch:4001";
+POOL2="stratum+tcp://pool.alpereum.ch:3004";
 POOL3="stratum+tcp://eth-eu2.nanopool.org:9999";
 POOL4="stratum+tcp://eth-eu1.nanopool.org:9999";
 POOL5="stratum+tcp://us1.ethermine.org:4444";
@@ -20,6 +20,30 @@ ETCPOOL4="stratum+tcp://eu1-etc.ethermine.org:4444";
 
 date "+%s" > /dev/shm/miner.start
 
+# This allows for installing different sgminer versions under /opt and choosing which one to run
+# through the VERSION setting below. This is in fact merely a hyphenated suffix to the directory
+# name in which sgminer is installed; it is not mandatory that this correlate with the version
+# number of sgminer. Arbitrary strings could be used to test development branches. Note that you
+# must configure sgminer with the relevant prefix for non-default install paths.
+
+# We also now change to the binary dir on startup so that sgminer will look for .bin files in
+# its install path, with the effect firstly that we do not create .bin files in multiple locations
+# according to whether we started the script from /etc/rc.local or from a terminal, and secondly
+# that multiple versions can coexist happily without using, removing or overwriting .bin files
+# from other versions.
+
+# Sane default, if we're not configured with custom prefix
+SGMINER_DIR="/usr/local/bin"
+
+VERSION="5.4.0";
+
+if test -x "/opt/sgminer-$VERSION/bin/sgminer"; then
+	if test -L "/opt/sgminer"; then rm -f /opt/sgminer; fi;
+	ln -s /opt/sgminer-$VERSION /opt/sgminer;
+	SGMINER_DIR="/opt/sgminer/bin";
+fi
+
+
 
 #Write out a startup script to /dev/shm/sgminer.tmp
 #Reinitialise temp and startup batch files with the shebang
@@ -29,11 +53,13 @@ echo "#!/bin/bash" > /dev/shm/sgminer.tmp
 #Write the desired arguments out into a temp file
 
 cat << EOF | while read line; do echo "$line " >> /dev/shm/sgminer.tmp ; done; echo "" >> /dev/shm/sgminer.tmp
-/usr/bin/nice -n -10 /usr/local/bin/sgminer 
+cd /opt/sgminer/bin; 
+/usr/bin/nice -n -15 ./sgminer
 # sgminer seems determined to write config files and reuse them, this should tell it otherwise
 --default-config=/dev/null
 --event-on gpu_sick
---event-reboot-delay 30
+--event-reboot-delay 5
+--no-restart
 #--verbose 
 #--debug 
 #--protocol-dump 
@@ -42,36 +68,36 @@ cat << EOF | while read line; do echo "$line " >> /dev/shm/sgminer.tmp ; done; e
 --log 5
 --tcp-keepalive 30 
 --queue 0
---gpu-threads 1 
---intensity 20 
---worksize 256 
---scan-time 7 
---expiry 28 
+--gpu-threads 2
+--intensity 20
+--worksize 256
+--scan-time 7
+--expiry 28
 --api-listen
---api-allow W:192.168.1.0/24,W:192.168.1.0/24
---api-description phoenix
+--api-allow W:192.168.1.0/24,W:127.0.0.1/32
+--api-description `hostname`
 --api-network
 --api-port 4028
---api-mcast
---api-mcast-addr 224.0.0.116
---api-mcast-code sgminer
---api-mcast-des "phoenix - 6 x RX470 GPUs"
---api-mcast-port 4028
+#--api-mcast
+#--api-mcast-addr 224.0.0.116
+#--api-mcast-code sgminer
+#--api-mcast-des "`hostname`"
+#--api-mcast-port 4028
 # quotas are arbitary and are used in proportion to the sum of all active quotas
 # thus you can make quotas add up to 100 if you want them to be a percentage of your rig total
 # or start them all at 100 if you want quotas as percentage of fair share
 # the approach used by the author below is based on total quota of 100 per currency 
---load-balance 
+--load-balance
 --disable-rejecting
--U "30;$POOL3" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
--U "10;$POOL4" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "40;$POOL2" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
 -U "30;$POOL" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
--U "10;$POOL5" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
--U "20;$POOL2" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
--U "35;$ETCPOOL3" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
--U "35;$ETCPOOL2" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
--U "15;$ETCPOOL" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce  --state disabled
--U "15;$ETCPOOL4" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
+-U "30;$POOL3" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "0;$POOL4" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "0;$POOL5" -O $WALLET.$WORKER:x -p x -k ethash --no-extranonce --state enabled
+-U "50;$ETCPOOL3" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
+-U "50;$ETCPOOL2" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
+-U "0;$ETCPOOL" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce  --state disabled
+-U "0;$ETCPOOL4" -O $ETCWALLET.$ETCWORKER:x -p x -k ethash --no-extranonce --state disabled
 2>/dev/shm/sgminer.log
 EOF
 
@@ -87,10 +113,9 @@ export GPU_USE_SYNC_OBJECTS=1
 export GPU_MAX_ALLOC_PERCENT=100
 export GPU_SINGLE_ALLOC_PERCENT=100
 export GPU_MAX_HEAP_SIZE=100
-# My cards have the default sclk speed at 1100MHz and I want a 15% overclock. Commented for safe default.
+# Overclocking commented for safe default
 #ls -1 /sys/class/drm/card?/device/pp_sclk_od | while read gpu; do echo 15 > $gpu; done
-ls -1 /sys/class/drm/card?/device/hwmon/hwmon?/pwm1 | while read gpu; do echo 100 > $gpu; done
-echo 60 > /tmp/gputemp.target
+ls -1 /sys/class/drm/card?/device/hwmon/hwmon?/pwm1 | while read gpu; do echo 176 > $gpu; done
 EOF
 
 # Now cat that batch file to another removing lines commented out which would break sgminer startup.
@@ -110,9 +135,6 @@ echo ""
 echo ""
 echo "Be patient. This will take a few seconds."
 
-# Little hack to avoid hangups when DNS resolution isn't working at startup
-
-sleep 1; test=`ping -c1 www.google.com || /bin/true`;
-
+echo 55 > /tmp/gputemp.target
 `which screen` -AdmS sgminer -t gputemp `which watch` /usr/local/bin/gputemp
 `which screen` -AS sgminer -X screen -t sgminer /bin/bash /dev/shm/sgminer 
