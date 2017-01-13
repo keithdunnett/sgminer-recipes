@@ -102,9 +102,14 @@ Having installed the drives, you'll want to set the order of boot devices in UEF
 
 ## Install operating system(s) and drivers
 
-We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use.
+It is generally wise to get your operating system(s) installed and working at this point, before adding your GPUs to the system. Discussion of operating system installation and software configuration can be found in the next section; 
+
+## Install your GPUs
+
 
 # Chapter 2: Dual Boot Win10 + Ubuntu mining rig
+
+We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use.
 
 Installing and using Windows is not generally a priority aspect of setting up a Linux mining rig, but if you want the ability to flash RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or simply evaluate both Windows and Linux on the same hardware, a dual boot setup may well be indicated.
 
