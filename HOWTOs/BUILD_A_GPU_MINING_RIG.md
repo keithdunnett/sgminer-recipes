@@ -30,7 +30,7 @@ This is not a treatise on the perfect hardware for mining, which varies accordin
 
 Here we have an ASRock H81 Pro BTC, to which I've fitted 2GB of RAM, an Intel Celeron G1840 CPU and the stock cooler. The switch on the white wire is a simple push button switch that acts as a power switch when connected to the relevant "PWRBTN" pins on the motherboard. 
 
-![Motherboard](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_170838.JPG "AsRock H81 Pro BTC")
+![Motherboard](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_170838.JPG "AsRock H81 Pro BTC")
 
 ### Set up the motherboard before use
 
@@ -48,17 +48,17 @@ Tip: if you have a spare SATA cable, extra to the one you'll need for the primar
 
 Similarly, if you're using a modular PSU, it's wise to assemble the required cables to the PSU before you're working in a confined space. In the photo below, the cables in the foreground are those needed by the motherboard, and in the background are cables providing 6 x Molex for the PCIe risers and 6 x 8-pin PCIe connectors for the GPUs.
 
-![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_161000.JPG "Corsair AX1200i")
+![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_161000.JPG "Corsair AX1200i")
 
 ### Connect power cables to the motherboard
 
 This board takes 24-pin ATX, 8-pin EPS12V CPU connector and two Molex for extra power to the PCIe slots.
 
-![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_182233.JPG "Cabled up")
+![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_182233.JPG "Cabled up")
 
 Once we put it all into into a crate, it'll look a bit like this:
 
-![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/_20170104_183125.JPG "Crated up")
+![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_183125.JPG "Crated up")
 
 ### Hardware issues to postpone
 
