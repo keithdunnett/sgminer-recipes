@@ -243,6 +243,13 @@ Or, from a live Linux USB (the one in the Ubuntu install ISO will do fine), run 
 
 ## 3.3 Configure Windows 10 for remote desktop access
 
+### 3.3.1 Microsoft RDP (Remote Desktop)
+
+Assuming you're using Windows 10 Professional, you can configure it to allow remote desktop access from around your local network [as described in this article](http://www.pcadvisor.co.uk/how-to/windows/how-use-remote-desktop-connection-in-windows-10-3632113/). If you have Windows 10 Home, unfortunately this version does not support the RDP server component and you will have to look to a third-party solution, such as RealVNC or similar.
+
+Once you have enabled Remote Desktop on your rig's Windows 10 Professional install, configure an RDP client (or a multi-protocol remote access client, such as Remmina in Linux) with the rig's IP address or local DNS host name and the login credentials to use with Windows 10 and it should then be possible to access the rig's Windows 10 desktop from machines around your local network. 
+
+When combined with the necessary Windows tools for BIOS editing and flashing and the dual-boot setup described below in the section on Ubuntu 16.04.1, this can provide an easy means of tweaking your GPU BIOS configuration and reflashing your GPUs as may be required. In essence, Linux can be set up to reboot into Windows 10 on command via grub-reboot (can be done remotely over SSH), then you can access your Windows 10 desktop across the network with RDP and carry out any BIOS editing or flashing required. Reboot Windows and the system will (unless configured otherwise) default to Linux on the next boot. Meaning that, until something breaks it (and something probably will), you can have a remote access dual boot that defaults to a Linux mining rig, but can be brought up running Windows 10 remotely on demand. Currently I'm using Windows only for BIOS editing and flashing, but it should be possible also to set it up for GPU mining, software testing or other applications as the case may be.
 
 ## 3.4 Configure Windows 10 for bios editing and flashing
 
