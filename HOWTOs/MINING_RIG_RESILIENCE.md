@@ -1,4 +1,4 @@
-# Mining rig resilience
+# Improving the resilience of your GPU mining rigs
 
 The resilience of a mining rig is much improved if it properly handles GPU crashes, hung tasks, network or pool outages and
 any other failure conditions that cause it not to do as the user ordered. This is a judicious mixture of prevention and cure; 
@@ -103,11 +103,29 @@ Default behaviour when the 'gpu_sick' event is enabled is that sgminer tries to 
 
 
 
-### 3.3 System hangs and crashes
+### 3.3 System faults, hangs and crashes
 #### 3.3.1 Crashed processes
 #### 3.3.2 Zombie processes
 #### 3.3.3 System lock-ups
-#### 3.3.4 Excess fault logging
+#### 3.3.4 Excess GPU fault logging
+
+Under certain conditions (typically of overloading the virtual memory, but not too well defined) the amdgpu-pro driver throws vast quantities of GPU faults (VM_CONTEXT1_PROTECTION_FAULT), with a range of potential adverse outcomes for mining rig operation. These errors are produced by the GPU driver (reporting errors produced by the hardware) and can be triggered to varying extents by a wide range of mining software, including (but not limited to) sgminer. This can cause a range of different impacts, depending upon the frequency and the extent to which it occurs.
+
+##### 3.3.4.1 System performance issues
+
+The issue is that the amdgpu driver logs three to four lines of fault address and status information for each and every one of multiple sequential memory accesses, generating tens or sometimes hundreds of lines of logging per second when the fault occurs. Further, the default rsyslog configuration in Ubuntu logs these errors to two files, /var/log/kern.log and /var/log/syslog, thus doubling the already substantial amount of log data before writing to disk.
+
+In extreme cases, i.e. when the fault is being triggered constantly, the load imposed by the flurry of logging will make a system almost completely unresponsive, and can reach an extent of filling up the root partition with tens of gigabytes of logs, although this extreme is uncommon and where this happens, the problem becomes highly visible in the course of setting up the rig.
+
+##### 3.3.4.2 Mining performance issues
+
+Short of an extent of locking up the system or filling up the disk, it is possible for the same faults to arise on one particular GPU and to persist in a fashion that severely hurts mining performance and system performance, but which is not detected by sgminer's events framework and can leave a system limping along in a poor state. 
+
+The precise impact will vary by the frequency and extent of the errors, but by way of example, one of my 6 x RX470 rigs started throwing bursts of errors from one of its six GPUs with brief 'pauses for breath' in between. This was not detected as a GPU failure in sgminer because the GPU was still hashing at a few hundred Kh/sec, a couple of percent of its usual hashrate. The impact on performance for that particular rig was to reduce the overall hashrate not just by the losses to faults on that GPU but by consuming sufficient system resources as to hurt the hashrate of the other 5 GPUs by a large margin, hobbling a 165Mh/s rig down to an output of 98Mh/s. Disabling the offending GPU via the curses interface as a temporary measure allowed the hashrate from the remaining 5 GPUs to climb back to 138Mh/s; the adverse impact of a GPU limping along in that fashion is greater than that of losing two GPUs altogether.
+
+
+
+
 
 ## 4. Logging, monitoring and responding
 
