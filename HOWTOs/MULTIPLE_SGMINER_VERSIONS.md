@@ -57,8 +57,6 @@ It is assumed that you will use a shell script to make the desired settings and 
         - possibly with analysis of prior successes or failures
 - change directory to the chosen install path before starting sgminer
 - modify the invocation of sgminer to call the binary in that directory with `./sgminer` 
-        
-
 
 ### Maintain a standard path with symlinks at runtime (optional)
 
@@ -67,4 +65,4 @@ It is assumed that you will use a shell script to make the desired settings and 
 
 
 
-## Ensure compatibility of your configuration with available sgminer versions (WIP)
+## Ensure config compatibility with available sgminer versions (WIP)
