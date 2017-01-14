@@ -141,7 +141,6 @@ There does not seem to be (or the author is unaware of) a unique cause of GPU me
 
 The potential remedies depend on whether your software, configuration settings and video BIOS are otherwise fit for the intended usage. If so, i.e. you have a particular GPU that does not play nicely with the same settings and video BIOS as is known to work well for other identical GPUs, a lower than average ASIC quality is the prime suspect, to which there are a number of likely responses:
 
-
 ###### Increase cooling (where memory is overclocked)
 
 Always verify whether any GPU memory problem is related to cooling, even where at first glance this seems implausible. When overclocking memory, in particular, be aware that the core GPU temperature as reported by the video driver is no longer a good indicator for the health of the memory or the need for cooling. Setting up a new rig with BIOS settings that worked well for identically specified RX470s on another rig, four cards out of six produced a stable 27.7Mh/s apiece and remain stable at any reasonable fan speed and GPU temperature.
@@ -152,11 +151,9 @@ The other card behaved more variably, sometimes working, sometimes dropping out 
 
 ###### Reduce memory clock speeds
 
-Barring a hardware problem, this is the almost guaranteed solution to GPU faults. The 8GB RX470s ship with a memory clock speed of 2000MHz; I've not come across one that won't handle 2100MHz using the 1750MHz timings, but 2150MHz is pushing it for some of my cards and 2200Mhz is pushing it for most of them, even with fan speeds increased by 15% over stock settings.
+Barring a hardware problem, this is the almost guaranteed solution to GPU faults. The 8GB RX470s ship with a memory clock speed of 2000MHz; I've not come across one that won't handle 2100MHz using the 1750MHz timings, but 2150MHz is pushing it for some of my cards and 2200Mhz is pushing it for most of them, even with fan speeds increased by 15% over stock settings. Cutting back the memory clock from 2150MHz to 2100MHz on the least stable card meant a drop in hashrate of 0.4Mh/s, but it put an end to the GPU faults at a stroke whilst still delivering a performance of 27.3Mh/s from that card, an acceptable tradeoff.
 
-Cutting back the memory clock from 2150MHz to 2100MHz on the least stable card meant a drop in hashrate of 0.4Mh/s, but it put an end to the GPU faults at a stroke whilst still delivering a performance of 27.3Mh/s from that card.
-
-###### Increase memory voltage (with caution)
+###### Increase memory voltage (with great caution)
 
 
 
