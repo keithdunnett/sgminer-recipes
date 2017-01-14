@@ -48,13 +48,16 @@ test -x ./sgminer && make install
 
 ## Select your sgminer working directory (and version) at run time
 
-It is assumed that you will use a shell script to make the desired settings and start sgminer; an [example including rudimentary support for multiple sgminer versions] is available in this repository. For those modifying existing startup scripts, the key changes to support multiple parallel installs were:
+It is assumed that you will use a shell script to make the desired settings and start sgminer; an [example including rudimentary support for multiple sgminer versions](https://github.com/magick777/sgminer-recipes/blob/master/sgminer-start-screen-example) is available in this repository. For those modifying existing startup scripts, the key changes to support multiple parallel installs were:
 
 - provide the startup script with the path to the instance of sgminer it should run
-    - initially just a variable containing the suffix of the required installation directory
-    - could trivially be passed at command line, moving the version decision out of the startup script
-    - could be looked up per rig from database or DNS for larger farms
-    - 
+    - initially this is just a variable containing the suffix of the installation directory to use
+    - version could trivially be passed to the script at command line
+    - version could be determined using arbitrary logic in the startup script
+        - possibly with analysis of prior successes or failures
+- change directory to the chosen install path before starting sgminer
+- modify the invocation of sgminer to call the binary in that directory with `./sgminer` 
+        
 
 
 ### Maintain a standard path with symlinks at runtime (optional)
