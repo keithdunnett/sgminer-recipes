@@ -73,7 +73,7 @@ They happen, not much that can usefully be done about it. Failover connectivity 
 
 #### 3.1.3 Router outages
 
-### 3.2 GPU hangs and crashes
+### 3.2 GPU faults, hangs and crashes
 
 #### 3.2.1 Event handling in sgminer
 
@@ -121,7 +121,46 @@ In extreme cases, i.e. when the fault is being triggered constantly, the load im
 
 Short of an extent of locking up the system or filling up the disk, it is possible for the same faults to arise on one particular GPU and to persist in a fashion that severely hurts mining performance and system performance, but which is not detected by sgminer's events framework and can leave a system limping along in a poor state. 
 
-The precise impact will vary by the frequency and extent of the errors, but by way of example, one of my 6 x RX470 rigs started throwing bursts of errors from one of its six GPUs with brief 'pauses for breath' in between. This was not detected as a GPU failure in sgminer because the GPU was still hashing at a few hundred Kh/sec, a couple of percent of its usual hashrate. The impact on performance for that particular rig was to reduce the overall hashrate not just by the losses to faults on that GPU but by consuming sufficient system resources as to hurt the hashrate of the other 5 GPUs by a large margin, hobbling a 165Mh/s rig down to an output of 98Mh/s. Disabling the offending GPU via the curses interface as a temporary measure allowed the hashrate from the remaining 5 GPUs to climb back to 138Mh/s; the adverse impact of a GPU limping along in that fashion is greater than that of losing two GPUs altogether.
+The precise impact will vary by the frequency and extent of the errors, but by way of example, one of my 6 x RX470 rigs started throwing bursts of errors from one of its six GPUs with brief 'pauses for breath' in between. This was not detected as a GPU failure in sgminer because the GPU was still hashing at a few hundred Kh/sec, a couple of percent of its usual hashrate. The impact on performance for that particular rig was to reduce the overall hashrate not just by the losses to faults on that GPU but by consuming sufficient system resources as to hurt the hashrate of the other 5 GPUs by a large margin, hobbling a 165Mh/s rig down to an output of 98Mh/s. 
+
+Disabling the offending GPU via the curses interface as a temporary measure allowed the hashrate from the remaining 5 GPUs to climb back to 138Mh/s; the adverse impact of a GPU limping along in that fashion is greater than that of losing two GPUs altogether.
+
+##### 3.3.4.3 Causes and remedies
+
+There does not seem to be (or the author is unaware of) a unique cause of GPU memory faults or a single solution to the problem. Besides the possibility of a physical fault with the GPU, there appears to be correlation between these faults and, in no particular order:
+
+- the intensity of work attempted by the mining software
+- the extent to which the GPU memory is overclocked
+   - relative to the ASIC quality of each individual GPU and the voltage at which the memory is running
+      - variance is noted among ostensibly identical GPUs running the same BIOS
+   - relative to the memory timings specified in the BIOS
+   - relative to the overall workload undertaken by the GPU
+      - depends on mining software, algorithm, worksize, intensity, GPU clock speed, etc.
+   - relative to the amount of cooling provided to the GPU
+- the age of the GPU driver; software bugs sometimes get fixed over time (and occasionally new ones introduced)
+
+The potential remedies depend on whether your software, configuration settings and video BIOS are otherwise fit for the intended usage. If so, i.e. you have a particular GPU that does not play nicely with the same settings and video BIOS as is known to work well for other identical GPUs, a lower than average ASIC quality is the prime suspect, to which there are a number of likely responses:
+
+
+###### Increase cooling (where memory is overclocked)
+
+Always verify whether any GPU memory problem is related to cooling, even where at first glance this seems implausible. When overclocking memory, in particular, be aware that the core GPU temperature as reported by the video driver is no longer a good indicator for the health of the memory or the need for cooling. Setting up a new rig with BIOS settings that worked well for identically specified RX470s on another rig, four cards out of six produced a stable 27.7Mh/s apiece and remain stable at any reasonable fan speed and GPU temperature.
+
+Two cards out of six had their problems with those BIOS settings. In one case, a GPU would start out in line with the others, then slowly lose around 1-1.2Mh/sec of hash rate compared with the rest, reporting the GPU temperature as 48-49 degrees and fan speed (scripted based on GPU temperature) as 70% of a possible 2,550rpm. These figures would not suggest a cooling problem and from this card I did not get an obvious flurry of GPU faults, just occasional dropouts, but forcing the fan speed to 100% (reducing the GPU temperature by all of 3 degrees) got most (not all) of the lost performance back. This was still insufficient at a 2150MHz memory to restore the full hashrate, or entirely to prevent the card from dropping out, suggesting that there would be a benefit to even higher fan speeds if running the GPUs at 2150MHz, or to a lower memory clock if preferring to keep fan speeds and noise moderate.
+
+The other card behaved more variably, sometimes working, sometimes dropping out and sometimes getting itself into a state of throwing tons of GPU errors. Merely increasing the fan speeds (within a 2550rpm limit) did not seem to solve stability issues here and it proved necessary to reduce the memory clock speed (see below). However, the intermittent and run time dependent nature of the faults would support overheating as a possible cause here too; it might be interesting to establish whether further pushing up the fan speeds would (at the expense of some noise) allow that GPU to support running at 2150MHz. 
+
+###### Reduce memory clock speeds
+
+Barring a hardware problem, this is the almost guaranteed solution to GPU faults. The 8GB RX470s ship with a memory clock speed of 2000MHz; I've not come across one that won't handle 2100MHz using the 1750MHz timings, but 2150MHz is pushing it for some of my cards and 2200Mhz is pushing it for most of them, even with fan speeds increased by 15% over stock settings.
+
+Cutting back the memory clock from 2150MHz to 2100MHz on the least stable card meant a drop in hashrate of 0.4Mh/s, but it put an end to the GPU faults at a stroke whilst still delivering a performance of 27.3Mh/s from that card.
+
+###### Increase memory voltage (with caution)
+
+
+
+
 
 
 
