@@ -1,8 +1,8 @@
-# Building a GPU mining rig - WIP JAN 2017
+# Building a dual-boot Linux / Windows 10 GPU mining rig
 
 As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it in a half-HOWTO, half photo journal. It's a fairly minimalist setup in an open crate (i.e. with no case or frame), the hardware is fairly typical of that used for Ethereum mining in early 2017 although the principles should translate to different cards, algorithms and currencies. This document covers the building of the hardware up to the point of operating system installation; from there we'll explore dual-booting with Windows and Ubuntu 16.04.1, setting up the GPUs and getting the rig mining. 
 
-## Chapter 1: Hardware Assembly
+## Chapter 1: Assembling the Mining Rig Hardware
 
 This is not a treatise on the perfect hardware for mining, which varies according to time and place, but the list of hardware I'm using in this rig is as follows:
 
@@ -65,7 +65,7 @@ Once we put it all into into a crate, it'll look a bit like this:
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_183125.JPG "Crated up")
 
-### Hardware issues to postpone
+### Hardware issues to postpone until later
 
 The first-time rig builder will be understandably eager to get the graphics cards and risers installed, and who'd blame them? In practice, if you're building with a mixture of new and second-hand parts (or even if not), it may not make much sense to start unboxing the GPUs until you have a working rig onto which to install them. You may also find it quicker and easier to install operating system(s) and driver(s) without multiple GPUs connected.
 
@@ -149,7 +149,7 @@ Details of the BIOS settings that work best for a given application are best res
 
 Really, do whatever works as long as you give the GPUs some space. Here's what my latest rig, 'raptor', looked like during initial setup with the first three GPUs installed. Yes, that is a stray Gigabit switch. Lazy I admit, but it's temporary. 
 
-![GPUs installing](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170114_223801.JPG "raptor mid install")
+![GPUs installing](https://github.com/magick777/sgminer-recipes/blob/master/HOWTOs/_20170115_005539.JPG "raptor mid install")
 
 and here's the state in which it's likely to spend the first few days or weeks of its life while I'm testing and until I get around to installing it properly somewhere:
 
@@ -201,11 +201,9 @@ root@raptor:~# sgminer --ndevs
 This is the output we want to see before sgminer is (hopefully) ready to start mining. 
 
 
-# Chapter 2: Dual Boot Win10 + Ubuntu mining rig
+# Chapter 2: Operating Systems: Dual Boot Win10 + Ubuntu mining rig
 
 We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use.
-
-Installing and using Windows is not generally a priority aspect of setting up a Linux mining rig, but if you want the ability to flash RX470s and RX480s in place with ATiFlash, or use the Polaris Bios Editor, or simply evaluate both Windows and Linux on the same hardware, a dual boot setup may well be indicated.
 
 To achieve that, we install Windows first and Linux second. This page examines the process I used of installing Win 7 Professional with an OEM licence, updating it, taking a clone of it for posterity and then upgrading it to Windows 10 Professional, followed by getting Windows 10 to dual-boot with Ubuntu 16.04.1 LTS. Those who have Windows 10 installed may wish to skip to the section on setting up dual boot.
 
@@ -267,11 +265,7 @@ These brought the system to a state where Windows Update and Internet Explorer 1
 
 Following the 5 offline updates above, I had another go with Windows Update, installing a further 67 updates in the process. 
 Then another round for 1 more, and again for 2 more, and yet again for 1 more. I'm starting to remember why I don't like 
-Windows! After that, the Action Centre still complains of the lack of a virus scanner, so in goes Microsoft Security Essentials
-as well. Then Windows Update pops up with another 10 updates, of which 4 succeed and 6 fail, requesting a restart. Restarted, 5 
-new of which 4 succeed, 1 requires restart. Restart, try again. 
-
-Finally, I get that one installed, and we're done with updates to the Win 7 Pro install.
+Windows! After that, the Action Centre still complains of the lack of a virus scanner, so in goes Microsoft Security Essentials as well. Then Windows Update pops up with another 10 updates, of which 4 succeed and 6 fail, requesting a restart. Restarted, 5 new of which 4 succeed, 1 requires restart. Restart, try again. Finally, I get that one installed, and we're done with updates to the Win 7 Pro install.
 
 ### Backup the Windows 7 install via Linux (optional)
 
@@ -305,7 +299,7 @@ The author has dyspraxia and makes *bona fide* use of both voice recognition and
 
 With a fully up to date Win 7 Pro install, running the Windows 10 Upgrade Advisor proceeded to download and prepare the Windows 10 install files. Instructed to go ahead, it duly installed Windows 10 (with a couple of reboots in the process) and by and large, it behaved itself. It lost my keyboard settings and defaulted me to English(US) but that was fairly easily fixed in the Windows settings.
 
-## 2.2.3 Windows 10 drivers
+## 2.2.3 Windows 10 hardware drivers
 
 Drivers were installed from the ASRock website for Windows 10. The generic drivers shipped with Windows 10 do a reasonable job of compatibility with the ASRock H81 Pro BTC, but there are more specific drivers for some parts of the chipset and certain on-board peripherals.
 
@@ -346,6 +340,11 @@ Once you have enabled Remote Desktop on your rig's Windows 10 Professional insta
 When combined with the necessary Windows tools for BIOS editing and flashing and the dual-boot setup described below in the section on Ubuntu 16.04.1, this can provide an easy means of tweaking your GPU BIOS configuration and reflashing your GPUs as may be required. In essence, Linux can be set up to reboot into Windows 10 on command via grub-reboot (can be done remotely over SSH), then you can access your Windows 10 desktop across the network with RDP and carry out any BIOS editing or flashing required. Reboot Windows and the system will (unless configured otherwise) default to Linux on the next boot. Meaning that, until something breaks it (and something probably will), you can have a remote access dual boot that defaults to a Linux mining rig, but can be brought up running Windows 10 remotely on demand. Currently I'm using Windows only for BIOS editing and flashing, but it should be possible also to set it up for GPU mining, software testing or other applications as the case may be.
 
 ## 3.4 Configure Windows 10 for bios editing and flashing
+
+You'll want the standard assortment of software for flashing and managing Polaris cards, namely
+
+- [Polaris Bios Editor](https://github.com/caa82437/PolarisBiosEditor)
+- [ATIWinFlash 2.74](broken)
 
 ## 3.5 Configure Windows 10 for GPU mining (MAYBE, NOT MY AREA OF EXPERTISE)
 
