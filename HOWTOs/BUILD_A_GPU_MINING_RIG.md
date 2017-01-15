@@ -1,6 +1,6 @@
 # Building a GPU mining rig - WIP JAN 2017
 
-As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it in a half-HOWTO, half photo journal. It's a minimalist setup in an open crate (i.e. with no case or frame), hardware is fairly typical of that used for Ethereum mining in early 2017. This page covers the building of the hardware up to the point of operating system installation; from there we'll explore dual-booting with Windows and Ubuntu 16.04.1, setting up the GPUs and getting the rig mining. 
+As I'm building another Linux GPU rig that will ultimately run sgminer, I thought I'd document it in a half-HOWTO, half photo journal. It's a fairly minimalist setup in an open crate (i.e. with no case or frame), the hardware is fairly typical of that used for Ethereum mining in early 2017 although the principles should translate to different cards, algorithms and currencies. This document covers the building of the hardware up to the point of operating system installation; from there we'll explore dual-booting with Windows and Ubuntu 16.04.1, setting up the GPUs and getting the rig mining. 
 
 ## Chapter 1: Hardware Assembly
 
@@ -25,8 +25,9 @@ This is not a treatise on the perfect hardware for mining, which varies accordin
     - Windows installer
     - Ubuntu live installer
 - Edimax SP2101-W mains power monitoring plug
+    - Android device for monitoring power usage at the wall
 
-### Assemble CPU, motherboard and memory
+### Assemble CPU, cooler, motherboard and memory
 
 Here we have an ASRock H81 Pro BTC, to which I've fitted 2GB of RAM, an Intel Celeron G1840 CPU and the stock cooler. The switch on the white wire is a simple push button switch that acts as a power switch when connected to the relevant "PWRBTN" pins on the motherboard. 
 
@@ -44,15 +45,19 @@ We're about to turn this nice, clean picture into a forest of cables, through wh
 
 Tip: if you have a spare SATA cable, extra to the one you'll need for the primary SSD, it's no bad idea to install it onto the second SATA3 port and leave it accessible. Makes life much easier if you later want to clone or replace the disk.
 
-### Assemble PSU and power cables
+### Assemble PSU, motherboard power cables and optionally GPU power cables
 
-Similarly, if you're using a modular PSU, it's wise to assemble the required cables to the PSU before you're working in a confined space. In the photo below, the cables in the foreground are those needed by the motherboard, and in the background are cables providing 6 x Molex for the PCIe risers and 6 x 8-pin PCIe connectors for the GPUs.
+Similarly, if you're using a modular PSU, it's sometimes wise to assemble the required cables to the PSU before you're working in a confined space. In the photo below, the cables in the foreground are those needed by the motherboard, and in the background are cables providing 6 x Molex for the PCIe risers and 6 x 8-pin PCIe connectors for the GPUs.
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_161000.JPG "Corsair AX1200i")
 
-### Connect power cables to the motherboard
+You might alternatively take the view (which, having tinkered with this setup, could have been a better idea) that there's more connections to make at the GPU end than at the PSU end, and that GPU installation is constrained by the available power cables, in which case assemble at this stage only what you need for the motherboard. It may prove easier (later) to connect the power cables to the GPUs and risers away from the rig, move and install the GPUs in such clusters (probably of 2 or 3) as suit the available power connections, then connect up the PSU end of those cables and the USB data cables from the PCIe slots.
 
-This board takes 24-pin ATX, 8-pin EPS12V CPU connector and two Molex for extra power to the PCIe slots.
+Tip: my view on this changed when it occurred to me how much easier it was for assembly purposes to stand the Corsair PSU on end, modular connections uppermost, with the mains cable and rocker switch just overhanging the edge of the desktop to allow it to stand up. Makes fitting the modular connections vastly easier than with the unsecured PSU moving about in any other orientation. 
+
+### Connect the necessary power cables to the motherboard
+
+This board takes 24-pin ATX, 8-pin EPS12V CPU connector and two Molex for extra power supply to the PCIe slots.
 
 ![Ax1200i](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170104_182233.JPG "Cabled up")
 
@@ -64,9 +69,9 @@ Once we put it all into into a crate, it'll look a bit like this:
 
 The first-time rig builder will be understandably eager to get the graphics cards and risers installed, and who'd blame them? In practice, if you're building with a mixture of new and second-hand parts (or even if not), it may not make much sense to start unboxing the GPUs until you have a working rig onto which to install them. You may also find it quicker and easier to install operating system(s) and driver(s) without multiple GPUs connected.
 
-For the same reason, I prefer to leave issues of the physical rig layout open-ended until the rig is working. Photos abound of neatly-framed rigs with GPUs lined up a couple of inches apart; my Sapphire Nitros vent hot air through the top of the cards as well as the ends, so 6 cards in a row means quite a temperature gradient as one heats up the next. So, let's crack on with getting the machine ready.
+For the same reason, I prefer to leave issues of the physical rig layout open-ended until the rig is working. Photos abound of neatly-framed rigs with GPUs lined up a couple of inches apart; my Sapphire Nitros vent hot air through the top of the cards as well as the ends, so 6 cards in a row means quite a temperature gradient as one card heats up the next. Many ways to handle that later. So, let's crack on with getting the machine ready.
 
-### Prepare your environment to set up a new machine 
+### Prepare your working environment to set up a new machine 
 
 Though the rig will eventually run headless, we'll need keyboard, video and mouse whilst configuring UEFI and installing an operating system, as well as network and power connections. At this stage, what we're looking to do is to test that what we've done works and that we can reach and configure the UEFI interface.
 
@@ -88,23 +93,112 @@ This will usually involve a certain amount of messing around, checking connectio
 - set onboard adapter as the primary GPU regardless of the PCIe slots
 - set the state after a power outage to ON; you want it to come back to life.
 
-#### Install SSD
+#### Install SSD or primary hard disk
 
-Or whatever other storage, but cheap SATA SSDs are plentiful. I'm using a 120GB ADATA SP550, more than adequate.
+Or whatever other storage, but cheap SATA SSDs are plentiful. I'm using a 120GB ADATA SP550, more than adequate. If you're faced with a roughly cost-neutral choice between two smaller SSDs or one larger one, having two separate SSDs can be no bad thing for dual boot setups, swap files and other such, but that's a nicety not a necessity. The instructions in this HOWTO are carried out using a single SSD.
 
-#### Insert UEFI OS install medium
+#### Insert your UEFI OS installer medium
 
 Which normally means plug in a UEFI-capable USB stick containing the installer files for your operating system, though you could use a DVD-ROM or any other means. The point is: get it connected so we can set UEFI up accordingly. Information on how to make or where to buy a USB install key for a given operating system are available from the publishers.
 
-#### Configure UEFI boot devices
+#### Configure your UEFI boot devices
 
-Having installed the drives, you'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like.
+Having installed the drives, you'll want to set the order of boot devices in UEFI, and potentially make any settings relevant to a solid state drive if you have one. When you reboot this time, you should be ready to install an operating system. Or two, if you like. 
 
-## Install operating system(s) and drivers
+Note that you may need to revisit this later after installing both operating systems in a dual-boot configuration, as Windows 10's efforts to ensure its startup doesn't break will reconfigure UEFI to load the Windows Boot Manager by default, unless and until you expressly configure UEFI to favour the boot entry created by Ubuntu. We'll come back to that in due course, when setting up dual boot if we're doing so (it's optional, the instructions herein should work for installing a plain Ubuntu mining rig, though you'll have to skip over a lot of information about dual boot configuration and Windows if you do.
 
-It is generally wise to get your operating system(s) installed and working at this point, before adding your GPUs to the system. Discussion of operating system installation and software configuration can be found in the next section; 
+## Install your operating system(s) and drivers before returning to hardware
+
+It is generally wise to get your operating system(s) installed and working at this point, before adding your GPUs to the system. Discussion of operating system installation, driver installation and software configuration can be found in the next section; we finish looking at building the hardware first for readability, but that does not suggest that all the hardware should be completed before you get an operating system up and running.
 
 ## Install your GPUs
+
+When we come to install the GPUs, it should be among the last stages of the hardware build, after having installed the initial operating system(s) and any necessary drivers. It is possible to do things out of turn, but adding 6 GPUs to a rig involves quite a number of connections, a forest of cabling you'll prefer not to disturb too often and a mass of new logical devices and their various ports for the operating system. Installing the GPUs won't be the *last* thing you do in setting up a rig, far from it, but for an easy life: rig first, GPUs second.
+
+### Unboxing and setting up the GPUs
+
+Building your first "proper mining rig" isn't perhaps quite as exciting as setting up your first couple of GPUs, because it involves a certain amount of repetitive manual labour. Such as extricating this lot from its packaging and getting it all wired up.
+
+![GPUs](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170114_223801.JPG "Sapphire RX470 pre install")
+
+We're keeping the rig layout as loose as possible until we see how everything works, but that doesn't mean the easiest approach is to handle each card individually. Have the GPUs out of their boxes and bags, and store the retail boxes if you plan to resell the GPUs later. You won't need driver CDs or other paraphernalia, just the GPUs, to which fit your 1x-16x PCIe risers. 
+
+### Cabling and connections
+
+Once you have your GPUs and risers plugged together, each will present three connectors that will need cabling:
+
+- a PCIe power connector on the GPU itself (8-pin PCIe on the Sapphire Nitro series)
+- a power connector on the PCIe riser, Molex for preference but variants with SATA and floppy power connectors exist
+    - most powered risers on the market have an onboard Molex connector with a SATA adapter
+    - choose ones with 60cm USB A-to-A cables. You don't want a bunch of GPUs within 30cm of cable from the motherboard.
+- a data connector (physically of USB3.0 type A) used to extend the PCIe lane to the riser 
+
+Of these, the power connections are likely to be more awkward and more restrictive of the hardware layout than the USB connections, so assuming that you're using a modular PSU (who isn't, these days?) it often makes sense to connect up your power cables to the GPUs and risers first, then take those assemblies to the PSU and motherboard, otherwise you'll end up fighting to fit the power cables in confined space. I also now install the other end of the data connection (the PCIe adapters and USB A to A cables) to the PCIe slots in advance, so the data cables are ready to connect up when I move the GPUs into place. This seems easier and more effective than trying to make the power connections in place without disturbing other connections.
+
+### Consider how to handle GPU flashing (and BIOS editing)
+
+This document describes the installation of a dual-boot rig with Windows 10 and Ubuntu, so it assumes that the GPUs can be installed first and flashed in situ, optionally via a Remote Desktop connection. If you're installing a Linux only rig, you'll want to give a thought to flashing the GPUs before you connect them to it or to your ability to run Windows on it, as the flashing tool requires it and no longer works from DOS, including in the command line version.
+
+Depending upon what you are doing and with what hardware - but very certainly for mining Ethereum on Sapphire RX470s - you will effectively be all but forced to flash a modified BIOS to run the rig efficiently, or in some cases at all using stock BIOS without turning down the intensity or the number of GPU threads you might otherwise run. On the rig depicted here, mining Ethereum with stock BIOS at intensity 20 and one thread per GPU produced 141Mh/s for 1136W at the wall, power usage of 8.05W/Mh/s, whilst with two threads per GPU it sought to draw over 1200W and triggered the PSU's overload protection.
+
+Using a fairly roughly modified BIOS, under Linux and without much in the way of optimisations, it was readily possible to achieve 159Mh/s for 930W at the wall from the same hardware if seeking optimal power efficiency (5.85W/Mh/s, a saving of > 27% versus the stock BIOS), or if seeking hashrate at the expense of a modicum of efficiency, to achieve 166Mh/s for 995W at the wall (6W/Mh/s, an efficiency saving still > 25% versus the stock config. These figures are still not in themselves spectacularly efficient; the rig with no GPUs consumes 30W at idle or 48W with heavy CPU usage so the 6 GPUs are consuming ~160W apiece at the wall, but running the rig with the stock BIOS would be fairly hopeless.
+
+Details of the BIOS settings that work best for a given application are best researched on a case by case basis, but most rigs will benefit substantially from a modified BIOS and therefore users are advised to consider making provision to flash the GPUs, either by equipping the rig itself with Windows 10 Professional (recommended for maximal flexibility) or connecting the cards to another system for flashing. 
+
+### Initial layout of rig hardware
+
+Really, do whatever works as long as you give the GPUs some space. Here's what my latest rig, 'raptor', looked like during initial setup with the first three GPUs installed. Yes, that is a stray Gigabit switch. Lazy I admit, but it's temporary. 
+
+![GPUs installing](https://raw.githubusercontent.com/magick777/sgminer-recipes/master/HOWTOs/_20170114_223801.JPG "raptor mid install")
+
+and here's the state in which it's likely to spend the first few days or weeks of its life while I'm testing and until I get around to installing it properly somewhere:
+
+![GPUs connected](https://github.com/magick777/sgminer-recipes/blob/master/HOWTOs/_20170115_005705.JPG "raptor with gpus installed")
+
+Test that all connections are correctly made. With the Sapphire GPUs the LEDs are a good indication at power on and before we get to operating system level, but sooner or later you'll need to establish that Linux can actually see the requisite number of GPUs.
+
+### FIXME MOVE to sw Check your GPUs are recognised
+```
+root@raptor:~# lspci | grep VGA
+00:02.0 VGA compatible controller: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor Integrated Graphics Controller (rev 06)
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev cf)
+02:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev cf)
+03:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev cf)
+04:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev cf)
+05:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev cf)
+06:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 67df (rev cf)
+```
+
+and that those GPUs are recognised by your OpenCL platform. If using amdgpu-pro, it has its own copy of clinfo, so:
+
+```
+root@raptor:~# /opt/amdgpu-pro/bin/clinfo | grep PCI
+  Device Topology:				 PCI[ B#1, D#0, F#0 ]
+  Device Topology:				 PCI[ B#2, D#0, F#0 ]
+  Device Topology:				 PCI[ B#3, D#0, F#0 ]
+  Device Topology:				 PCI[ B#4, D#0, F#0 ]
+  Device Topology:				 PCI[ B#5, D#0, F#0 ]
+  Device Topology:				 PCI[ B#6, D#0, F#0 ]
+```
+
+or, if you've already built and installed sgminer against your OpenCL platform, then try:
+
+```
+root@raptor:~# sgminer --ndevs
+[01:21:59] CL Platform vendor: Advanced Micro Devices, Inc.                    
+[01:21:59] CL Platform name: AMD Accelerated Parallel Processing                    
+[01:21:59] CL Platform version: OpenCL 2.0 AMD-APP (2117.10)                    
+[01:21:59] Platform devices: 6                    
+[01:21:59] 	0	Ellesmere                    
+[01:21:59] 	1	Ellesmere                    
+[01:21:59] 	2	Ellesmere                    
+[01:21:59] 	3	Ellesmere                    
+[01:21:59] 	4	Ellesmere                    
+[01:21:59] 	5	Ellesmere                    
+[01:21:59] 6 GPU devices max detected 
+```
+
+This is the output we want to see before sgminer is (hopefully) ready to start mining. 
 
 
 # Chapter 2: Dual Boot Win10 + Ubuntu mining rig
