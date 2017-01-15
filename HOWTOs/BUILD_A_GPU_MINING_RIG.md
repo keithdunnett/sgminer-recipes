@@ -435,21 +435,18 @@ So, whilst we still have Xorg installed, our default is now to boot to Ubuntu in
 
 ## 4.5 Configure Ubuntu 16.04.1 for OpenCL GPU mining
 
-### 4.5.1 Install AMD graphics driver & Accelerated Parallel Processing SDK
+### 4.5.1 Install the AMD graphics driver & the Accelerated Parallel Processing SDK
 
-You'll need to download these directly from AMD - though by the time you're looking at a rig of this sort, you knew that. They'll install easily enough over SSH. Don't expect them to find anything just yet, of course. We'll need a GPU installed first, but before we go back to playing around with the hardware, we may as well try to get the rest of the software we need installed.
+You'll need to download these directly from AMD - though by the time you're looking at a rig of this sort, you knew that. They'll install easily enough over SSH. Don't expect them to find anything just yet, of course. We'll need a GPU installed first, but before we get back to playing around with the hardware, we may as well try to get the rest of the software we need installed.
 
 ### 4.5.2 Install sgminer and any dependencies
 
-This being a fresh install of Ubuntu 16.04.1, we'll uncover any dependencies that need to be installed. Note that installing amdgpu-pro pulled in some of the compiler components that we need.
+This being a fresh install of Ubuntu 16.04.1, we'll uncover any dependencies that need to be installed. Note that installing amdgpu-pro pulled in some of the compiler components that we need. Here's a run-through of the initial install of sgminer:
 
 [![asciicast](https://asciinema.org/a/br5nu6il2bryxrn2pwg1gpg9c.png)](https://asciinema.org/a/br5nu6il2bryxrn2pwg1gpg9c)
 
 
 
 
-
-
-# Section 5: Setting up your GPUs
 
 
