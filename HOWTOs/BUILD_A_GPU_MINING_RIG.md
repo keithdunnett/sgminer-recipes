@@ -201,17 +201,17 @@ root@raptor:~# sgminer --ndevs
 This is the output we want to see before sgminer is (hopefully) ready to start mining. 
 
 
-# Chapter 2: Operating Systems: Dual Boot Win10 + Ubuntu mining rig
+# Chapter 2: Operating Systems: Dual Boot Win10 + Ubuntu
 
 We are, essentially, building a Linux rig. However, for the AMD RX470 and RX480 at least, you'll need Windows for the Polaris Bios Editor and also for ATiFlash 2.74, so you're faced with the choices of making Windows available on the rig itself or moving the GPUs to a Windows rig in order to flash them. For my purposes I'm going to set this rig up to dual-boot between Windows 10 Pro (which will mainly be used for flashing) and Ubuntu 16.04.1 for general mining use.
 
 To achieve that, we install Windows first and Linux second. This page examines the process I used of installing Win 7 Professional with an OEM licence, updating it, taking a clone of it for posterity and then upgrading it to Windows 10 Professional, followed by getting Windows 10 to dual-boot with Ubuntu 16.04.1 LTS. Those who have Windows 10 installed may wish to skip to the section on setting up dual boot.
 
-# 2.1 Installing Windows 7 Professional
+## 2.1 Installing Windows 7 Professional (if needed)
 
-## Windows 7 Professional x64 OEM installation notes
+### Windows 7 Professional x64 OEM installation notes
 
-### Installation media
+#### Windows 7 Installation media
 
 You'll need the correct install disk according to the licence that you have and the computer that you intend to install it upon.
 For retail licences, you can use Microsoft's Media Creation Tool but this will not supply install disks for OEM licences, so it may
@@ -222,15 +222,15 @@ To save yourself some time and hassle later, once you've made your Win 7 SP1 UEF
 
 Tip: if you're going to require UEFI installation media for Ubuntu 16.04.1, you can also produce that with  [Rufus](https://rufus.akeo.ie/) from an Ubuntu ISO image. Not a bad idea if you're doing the same for Windows 7.
 
-### Windows 7 installation issues
+#### Windows 7 installation issues
 
 Windows 7 Professional installed OK, but needed the Ethernet drivers from ASRock to be able to access the network. As a newly installed motherboard without useful hardware clock data, it had to be instructed to get time info from the network to set the correct time and date before SSL certificates would validate.
 
-#### Windows 7 activation
+##### Windows 7 activation
 
 My Windows 7 OEM licence required telephone activation, but this was painless enough through Microsoft's automated telephone activation service, and worked as expected first time.
 
-#### Windows 7 update issues
+##### Windows 7 update issues
 
 The Windows 7 SP1 ISO from which I installed is old, with a vast amount of changes to Windows 7 since. The initial effect of this was that everything broke in spectacular fashion:
 
@@ -240,14 +240,14 @@ The Windows 7 SP1 ISO from which I installed is old, with a vast amount of chang
 
 Fed up with that, and realising the age of the operating system, I resorted to the expedient of downloading standalone installers to a USB key and running each in turn.  
 
-### Updating Windows 7 with standalone installers
+#### Updating Windows 7 with standalone installers
 
-#### Device Drivers
+##### Windows 7 Device Drivers
 
 In addition to the Realtek network card, which required a driver from the outset the USB3.0 controller also needs a driver to function with Windows 7, and I took
 the opportunity to install the Intel display driver, all from ASRock's website. As with the offline updates below, it may be worth having these on your USB key when you install Windows 7.
 
-#### Offline Updates
+##### Windows 7 Offline Updates
 
 When installing an old operating system, there are usually offline installers available for some of the larger updates, as discussed
 in [this HowToGeek article](http://www.howtogeek.com/255435/how-to-update-windows-7-all-at-once-with-microsofts-convenience-rollup/). All
@@ -261,13 +261,13 @@ told, starting from a Win7 x64 SP1 install, these were the useful ones and shoul
 
 These brought the system to a state where Windows Update and Internet Explorer 11 were usable, so I proceeded with online updating from there.
 
-#### Windows Update
+##### Windows 7 Update - the final frontier
 
 Following the 5 offline updates above, I had another go with Windows Update, installing a further 67 updates in the process. 
 Then another round for 1 more, and again for 2 more, and yet again for 1 more. I'm starting to remember why I don't like 
 Windows! After that, the Action Centre still complains of the lack of a virus scanner, so in goes Microsoft Security Essentials as well. Then Windows Update pops up with another 10 updates, of which 4 succeed and 6 fail, requesting a restart. Restarted, 5 new of which 4 succeed, 1 requires restart. Restart, try again. Finally, I get that one installed, and we're done with updates to the Win 7 Pro install.
 
-### Backup the Windows 7 install via Linux (optional)
+#### Backup the Windows 7 install via Linux (optional)
 
 If you are proceeding to upgrade to Windows 10 post haste, this may not be worthwhile, but I saw fit to take a backup of the
 installed Windows 7 system. Prior to doing so, I ran the Disk Cleanup tool from within Windows to clean up after upgrades, then 
@@ -287,23 +287,23 @@ to have it read /dev/sda in 16MB chunks and send them across the network. This a
 the whole 120GB disk in just over 20 minutes, and it provides me with the ability to roll back or to clone it, deactivating and 
 relicensing as needed, if I should later have cause. That done, I booted back into Windows 7 and ran the Windows 10 Upgrade Adviser anew.
 
-# 2.2: Upgrade to Windows 10 Professional
+## 2.2: Upgrade to Windows 10 Professional
 
-## 2.2.1 Windows 10 free upgrade for customers who use assistive technologies
+### 2.2.1 Windows 10 free upgrade for customers who use assistive technologies
 
 The free upgrade offer for general use expired July 29th 2016; availability of the free Windows 10 upgrade thereafter is, as Microsoft explains, aimed at users of assistive technologies. 
 
 The author has dyspraxia and makes *bona fide* use of both voice recognition and text-to-speech technologies, so has no ethical reservations in availing of Microsoft's continuing offer, but it's not necessary to have a disability in order to use such technologies. Users wondering if they can take advantage for a free upgrade should consider whether they use such things as voice recognition; it does seem to be open to anyone who chooses to avail of it.
 
-## 2.2.2 Windows 10 upgrade procedure
+### 2.2.2 Windows 10 upgrade procedure
 
 With a fully up to date Win 7 Pro install, running the Windows 10 Upgrade Advisor proceeded to download and prepare the Windows 10 install files. Instructed to go ahead, it duly installed Windows 10 (with a couple of reboots in the process) and by and large, it behaved itself. It lost my keyboard settings and defaulted me to English(US) but that was fairly easily fixed in the Windows settings.
 
-## 2.2.3 Windows 10 hardware drivers
+### 2.2.3 Windows 10 hardware drivers
 
 Drivers were installed from the ASRock website for Windows 10. The generic drivers shipped with Windows 10 do a reasonable job of compatibility with the ASRock H81 Pro BTC, but there are more specific drivers for some parts of the chipset and certain on-board peripherals.
 
-## 2.2.4 Windows 10 issues
+### 2.2.4 Windows 10 issues
 
 I had a couple of unexplained issues in the course of the upgrade to Windows 10 and setting up afterwards. These were not sufficiently reproducible to complain bitterly.
 
@@ -344,14 +344,12 @@ When combined with the necessary Windows tools for BIOS editing and flashing and
 You'll want the standard assortment of software for flashing and managing Polaris cards, namely
 
 - [Polaris Bios Editor](https://github.com/caa82437/PolarisBiosEditor)
-- [ATIWinFlash 2.74](broken)
+- [ATIWinFlash 2.74](link broken)
 
 ## 3.5 Configure Windows 10 for GPU mining (MAYBE, NOT MY AREA OF EXPERTISE)
 
 
 
-
-We assume here that the intention is to fit the Windows 10 
 
 # Section 4: Install & configure Ubuntu 16.04.1 LTS
 
@@ -363,7 +361,7 @@ This section describes configuring Ubuntu 16.04.1 LTS from install to running sg
 
 To install in UEFI mode, you will need a UEFI-ready USB key with the Ubuntu installer on it. One of the easiest ways to produce this is to download the ISO under Windows and use Rufus as for Windows installs. Make sure when creating the USB key to select "GPT partitioning schema for UEFI" to have it install in UEFI mode.
 
-Fixme: Linux instructions
+Fixme: Linux instructions to generate USB media
 
 ### Running the Ubuntu installer
 
@@ -384,7 +382,7 @@ apt upgrade
 
 Ubuntu will normally configure the proper entries in the GRUB menu where it detects another operating system present, and GRUB will happily hand off to the Windows Boot Manager where so requested, so sometimes there's not much configuration to be done.
 
-### 4.2.1 Configure GRUB default behaviour
+### 4.2.1 Configure default behaviour of the GRUB bootloader
 
 For my purposes I want to boot Ubuntu by default and boot Windows only when I say so; this is the default behaviour as configured by Ubuntu, and it can allow some flexibility for toggling between operating systems (see below). However, if for any reason you do actually want to boot Windows more than once (!) you can, optionally, set
 
@@ -393,11 +391,11 @@ GRUB_SAVEDEFAULT=true
 GRUB_DEFAULT=saved
 ```
 
-in /etc/default/grub and then `update-grub` to make choices persistent, i.e. continue to boot Ubuntu until I manually switch to Windows and vice versa. Unless you're aiming to run Windows most of the time, you probably don't want this, as defaulting to Ubuntu and changing that where required with `grub-reboot` is more flexible.
+in /etc/default/grub and then `update-grub` to make choices persistent, i.e. continue to boot Ubuntu until I manually switch to Windows and vice versa. Unless you're aiming to run Windows most of the time, *you probably don't want this*, as defaulting to Ubuntu and changing that where required with `grub-reboot` is more flexible.
 
 ### 4.2.2 Be aware of the `grub-reboot` command in Linux
 
-This allows you to specify a particular GRUB menu entry (by name or number) to be selected at next reboot, one time only. Thus a command such as `grub-reboot "Windows Boot Manager (on /dev/sda1)" && reboot` will have the system reboot to Windows 10; rebooting from Windows 10 will default to Linux. With adequate remote access to both operating systems, this can be used to facilitate remote-access dual-boot with remote network computing, but that's getting fancy.
+This allows you to specify a particular GRUB menu entry (by name or number) to be selected at next reboot, one time only. Thus a command such as `grub-reboot "Windows Boot Manager (on /dev/sda1)" && reboot` will have the system reboot to Windows 10; rebooting from Windows 10 will default to Linux. With adequate remote access to both operating systems, this can be used to facilitate remote-access dual-boot with remote network computing, a bit fancy perhaps.
 
 ## 4.3 Configure Ubuntu 16.04.1 for remote access
 
@@ -454,9 +452,13 @@ The bug is specific to compiling new kernels, so if you're upgrading a rig that 
 
 Alternatively you can persuade the 16.50 amdgpu-pro driver to work with the OpenCL ICD from version 16.40 by first installing version 16.50, then going to the install directory for 16.40 and running `dpkg -i opencl-amdgpu-pro-icd_16.40-348864*`, which will overwrite just the OpenCL ICD (responsible for the offending compiler) and permit the 16.50 core driver to function with the older OpenCL. 
 
-
 ##### amdgpu-pro v16.40
+
+
+
 ##### amdgpu-pro v16.30
+
+Initial release. Had a few bugs, too long ago for me to remember. Versions 16.50 and 16.40 are the realistic options within Ubuntu 16.04.1
 
 
 ### 4.5.2 Install sgminer and any dependencies
@@ -466,7 +468,8 @@ This being a fresh install of Ubuntu 16.04.1, we'll uncover any dependencies tha
 [![asciicast](https://asciinema.org/a/br5nu6il2bryxrn2pwg1gpg9c.png)](https://asciinema.org/a/br5nu6il2bryxrn2pwg1gpg9c)
 
 
+### 4.5.3 Optionally, configure multiple sgminer installs to coexist
 
-
+### 4.5.4 Configure a startup script for sgminer
 
 
