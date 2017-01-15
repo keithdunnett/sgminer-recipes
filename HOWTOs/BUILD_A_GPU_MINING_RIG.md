@@ -439,6 +439,27 @@ So, whilst we still have Xorg installed, our default is now to boot to Ubuntu in
 
 You'll need to download these directly from AMD - though by the time you're looking at a rig of this sort, you knew that. They'll install easily enough over SSH. Don't expect them to find anything just yet, of course. We'll need a GPU installed first, but before we get back to playing around with the hardware, we may as well try to get the rest of the software we need installed.
 
+#### 4.5.1.1 AMD GPU driver bugs (Linux)
+
+The amdgpu-pro Linux driver is released as a beta, so expecting production-quality code might be optimistic, but AMD still has a lot of bugs to squash. 
+
+##### amdgpu-pro v16.50
+
+AMD's latest driver release contains a new and buggy OpenCL compiler version that makes a mess of compiling the kernel binaries from OpenCL sources, producing oversized binaries that merely throw hardware errors. In other respects the new driver carries some bug fixes, but as supplied it won't compile a working OpenCL kernel. Besides downgrading back to 16.40 (which AMD doesn't make straight-forward if you don't have a copy lying around), there are a couple of possible workarounds:
+
+###### Use pre-compiled OpenCL binaries (this may happen by default if upgrading)
+
+The bug is specific to compiling new kernels, so if you're upgrading a rig that has built a suitable kernel binary under 16.40, it will still be able to use that binary under 16.50. This may be adequate for established rigs that are not likely to change function, but will lead to undefined behaviours if any change of settings is made that requires a kernel compile.
+
+###### Forcibly overwrite the OpenCL library with an older, working version
+
+Alternatively you can persuade the 16.50 amdgpu-pro driver to work with the OpenCL ICD from version 16.40 by first installing version 16.50, then going to the install directory for 16.40 and running `dpkg -i opencl-amdgpu-pro-icd_16.40-348864*`, which will overwrite just the OpenCL ICD (responsible for the offending compiler) and permit the 16.50 core driver to function with the older OpenCL. 
+
+
+##### amdgpu-pro v16.40
+##### amdgpu-pro v16.30
+
+
 ### 4.5.2 Install sgminer and any dependencies
 
 This being a fresh install of Ubuntu 16.04.1, we'll uncover any dependencies that need to be installed. Note that installing amdgpu-pro pulled in some of the compiler components that we need. Here's a run-through of the initial install of sgminer:
